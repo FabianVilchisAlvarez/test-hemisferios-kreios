@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Test Preferencias Hemisféricas - Kreios</title>
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+
+<body>
+<header class="topbar">
+  <img src="{{ url_for('static', filename='images/logo.png') }}" class="logo" />
+  <h1>Test de Preferencias Hemisféricas</h1>
+</header>
+
+<main class="container">
+
+  <section class="card">
+  <div id="mapas"></div>
+  </section>
+
+  <div class="controls">
+    <button id="prev" class="btn btn-secondary">Anterior</button>
+    <button id="next" class="btn">Siguiente</button>
+  </div>
+
+  <section id="resultado" class="card" style="display:none;">
+    <h2>Resultados</h2>
+    <canvas id="chart"></canvas>
+    <div id="interpretacion"></div>
+    <button id="descargar" class="btn btn-primary" disabled>Descargar PDF</button>
+  </section>
+
+</main>
+
+<footer class="footer">
+  © 2023 Kreios Consulting
+</footer>
+
+<script>
+  const MAPS = {{ maps | tojson }};
+  const INTERP = {{ interp | tojson }};
+</script>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
