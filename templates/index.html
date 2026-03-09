@@ -1,49 +1,120 @@
 <!doctype html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <title>Test Preferencias Hemisféricas - Kreios</title>
+<meta charset="utf-8" />
+<title>Test Preferencias Hemisféricas - Kreios</title>
 
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}"/>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
 </head>
 
 <body>
+
+  <div class="brain-bg">
+
+<div class="brain azul"></div>
+<div class="brain amarillo"></div>
+<div class="brain rojo"></div>
+<div class="brain verde"></div>
+
+</div>
+
 <header class="topbar">
-  <img src="{{ url_for('static', filename='images/logo.png') }}" class="logo" />
-  <h1>Test de Preferencias Hemisféricas</h1>
+
+<img src="{{ url_for('static', filename='images/logo.png') }}" class="logo"/>
+
+<div>
+<h1>Test de Preferencias Hemisféricas</h1>
+<p class="subtitle">Descubre cómo procesa información tu cerebro</p>
+</div>
+
 </header>
 
 <main class="container">
 
-  <section class="card">
-  <div id="mapas"></div>
-  </section>
+<!-- INTRO -->
 
-  <div class="controls">
-    <button id="prev" class="btn btn-secondary">Anterior</button>
-    <button id="next" class="btn">Siguiente</button>
-  </div>
+<section id="intro" class="card intro">
 
-  <section id="resultado" class="card" style="display:none;">
-    <h2>Resultados</h2>
-    <canvas id="chart"></canvas>
-    <div id="interpretacion"></div>
-    <button id="descargar" class="btn btn-primary" disabled>Descargar PDF</button>
-  </section>
+<h2>🧠 ¿Cómo funciona?</h2>
+
+<p>
+Este ejercicio identifica tu estilo predominante de pensamiento y la manera en que analizas situaciones, tomas decisiones y resuelves problemas.
+</p>
+
+<div class="rules">
+
+<div class="rule">
+🎯 <strong>Objetivo</strong><br>
+Selecciona las palabras que mejor describen tu forma natural de pensar.
+</div>
+
+<div class="rule">
+⚡ <strong>Regla</strong><br>
+Debes elegir exactamente <strong>8 palabras</strong> en cada mapa.
+</div>
+
+<div class="rule">
+⏱ <strong>Tip</strong><br>
+No lo pienses demasiado. Tu primera reacción suele ser la más precisa.
+</div>
+
+</div>
+
+</section>
+
+<!-- MAPAS -->
+
+<section id="mapSection" class="card">
+
+<div id="mapas"></div>
+
+<p class="contador">
+Seleccionadas: <span id="count">0</span> / 8
+</p>
+
+</section>
+
+<div class="controls">
+
+<button id="prev" class="btn btn-secondary">Anterior</button>
+
+<button id="next" class="btn">Siguiente</button>
+
+</div>
+
+<!-- RESULTADOS -->
+
+<section id="resultado" class="card" style="display:none;">
+
+<h2>Resultados de tu Perfil Cognitivo</h2>
+
+<canvas id="chart"></canvas>
+
+<div id="interpretacion"></div>
+
+<button id="descargar" class="btn btn-primary">
+Descargar PDF
+</button>
+
+</section>
 
 </main>
 
 <footer class="footer">
-  © 2023 Kreios Consulting
+© 2023 Kreios Consulting
 </footer>
 
-<script>
-  const MAPS = {{ maps | tojson }};
-  const INTERP = {{ interp | tojson }};
-</script>
+<div id="progress">
+<div id="progress-bar"></div>
+</div>
+
+<script src="{{ url_for('static', filename='js/maps.js') }}"></script>
 <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
 </body>
 </html>

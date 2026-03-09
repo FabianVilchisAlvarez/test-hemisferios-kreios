@@ -2,309 +2,471 @@ let currentMap = 1;
 const selections = {};
 let chartInstance = null;
 
-// =======================
-// INTERPRETACIONES
-// =======================
+/* =======================
+INTERPRETACIONES
+======================= */
+
 const INTERPRETACIONES = {
-  amarillo: {
-    titulo: "Dominancia Hemisférica Cerebral Amarilla – Steve Jobs",
-    texto: `
-      <p><strong>Hola visionario</strong>, te habla Steve Jobs. Imagina por un momento cómo es tener un cerebro amarillo.
-      Hablo de forma figurativa para captar tu atención, pero me refiero a la dominancia del cuadrante D del modelo de Ned Herrmann.</p>
 
-      <p>Los amarillos somos impacientes, inquietos y nos cuesta trabajo encajar en entornos rígidos y conservadores.
-      Amamos la innovación, la creatividad y la disrupción, para bien y para mal.</p>
+amarillo:{
+titulo:"Dominancia Cognitiva Amarilla – Pensamiento Creativo e Innovador",
+texto:`
 
-      <p>Necesitamos espacio, libertad, múltiples estímulos y vivir en el futuro. La espontaneidad, el juego
-      y la especulación forman parte natural de nuestra manera de ser.</p>
+<p>
+Tu perfil refleja una predominancia del <strong>pensamiento creativo, conceptual y orientado hacia la exploración de nuevas posibilidades</strong>. Este tipo de procesamiento cognitivo se caracteriza por una fuerte capacidad para imaginar escenarios, generar ideas y conectar conceptos aparentemente diferentes.
+</p>
 
-      <h4>🌟 Luces</h4>
-      <ul>
-        <li>Imagina posibilidades que antes no existían.</li>
-        <li>Reta el status quo y mantiene viva la identidad organizacional.</li>
-        <li>Integra ideas aparentemente inconexas.</li>
-        <li>Mantiene el dinamismo y la adaptación constante.</li>
-      </ul>
+<p>
+Las personas con dominancia amarilla suelen procesar la información de manera global. Esto significa que su cerebro tiende a enfocarse primero en el panorama general antes que en los detalles específicos. Es común que tu mente funcione de forma asociativa, conectando ideas rápidamente y generando nuevas interpretaciones o soluciones.
+</p>
 
-      <h4>⚠️ Sombras</h4>
-      <ul>
-        <li>Pierde piso en la viabilidad real de sus ideas.</li>
-        <li>Corre riesgos excesivos.</li>
-        <li>Todo se vuelve prototipo sin consolidación.</li>
-        <li>Inestabilidad y desperdicio de recursos.</li>
-      </ul>
-    `
-  },
+<h4>🧠 Cómo procesa información tu cerebro</h4>
+<ul>
+<li>Tiendes a captar el contexto general antes de analizar los detalles.</li>
+<li>Tu mente conecta conceptos y genera asociaciones con rapidez.</li>
+<li>Prefieres explorar posibilidades y alternativas antes que seguir estructuras rígidas.</li>
+<li>Tu pensamiento suele orientarse hacia el futuro y hacia lo que podría ser posible.</li>
+</ul>
 
-  azul: {
-    titulo: "Dominancia Hemisférica Cerebral Azul – Mr. Spock",
-    texto: `
-      <p><strong>Saludos terrícola.</strong> Soy Mr. Spock, procedente del planeta Vulcano.
-      Se me solicitó explicar la dominancia cerebral azul (cuadrante A).</p>
+<h4>🧩 Cómo tomas decisiones</h4>
+<p>
+Las decisiones en este perfil suelen surgir de una combinación entre intuición, creatividad y visión estratégica. En lugar de centrarse exclusivamente en datos concretos, tu cerebro tiende a evaluar ideas desde su potencial o impacto futuro.
+</p>
 
-      <p>Somos altamente racionales, orientados a hechos, cifras y lógica.
-      Lo emocional rara vez es considerado un argumento válido.</p>
+<h4>🌟 Fortalezas cognitivas</h4>
+<ul>
+<li>Alta creatividad y pensamiento innovador.</li>
+<li>Capacidad para generar ideas originales.</li>
+<li>Visión estratégica a largo plazo.</li>
+<li>Facilidad para encontrar soluciones poco convencionales.</li>
+</ul>
 
-      <p>Hablamos directo, sin rodeos. Las cosas son como son.</p>
+<h4>⚠️ Riesgos cognitivos</h4>
+<ul>
+<li>Puede existir tendencia a pasar rápidamente de una idea a otra.</li>
+<li>Algunas ideas pueden necesitar más análisis antes de implementarse.</li>
+<li>Las tareas repetitivas o altamente estructuradas pueden resultar poco motivadoras.</li>
+</ul>
 
-      <h4>🌟 Luces</h4>
-      <ul>
-        <li>Desarrolla métricas, indicadores y modelos sólidos.</li>
-        <li>Aporta fundamentos técnicos a las decisiones.</li>
-        <li>Balancea la emoción con datos.</li>
-        <li>Garantiza rentabilidad y viabilidad.</li>
-      </ul>
+<h4>📈 Desarrollo recomendado</h4>
+<p>
+Tu capacidad para generar ideas es una gran fortaleza. Para potenciar aún más tu perfil, resulta útil complementar la creatividad con herramientas de organización, priorización y evaluación práctica de proyectos. Cuando la creatividad se combina con estructura, el impacto de tus ideas puede ser mucho mayor.
+</p>
 
-      <h4>⚠️ Sombras</h4>
-      <ul>
-        <li>Arrogancia intelectual.</li>
-        <li>Frialdad emocional.</li>
-        <li>Visión limitada al corto plazo.</li>
-        <li>Escepticismo paralizante.</li>
-      </ul>
-    `
-  },
+`
+},
 
-  rojo: {
-    titulo: "Dominancia Hemisférica Cerebral Roja – Mahatma Gandhi",
-    texto: `
-      <p><strong>Hola hermano</strong>, puedes llamarme Gandhi.
-      Desde la empatía te comparto cómo es vivir desde el cuadrante rojo.</p>
+azul:{
+titulo:"Dominancia Cognitiva Azul – Pensamiento Analítico y Lógico",
+texto:`
 
-      <p>No buscamos el porqué, sino el <em>para qué</em>.
-      Las personas, emociones y relaciones son lo más importante.</p>
+<p>
+Tu perfil muestra una clara predominancia del <strong>pensamiento analítico, lógico y estructurado</strong>. Este estilo cognitivo se caracteriza por la tendencia a procesar la información de forma detallada, buscando comprender las relaciones entre datos, causas y consecuencias.
+</p>
 
-      <p>Transmitimos emociones con intensidad y profundidad.</p>
+<p>
+Las personas con dominancia azul suelen sentirse cómodas cuando pueden analizar información de manera objetiva. Tu cerebro tiende a organizar mentalmente los problemas en partes más pequeñas para entenderlos mejor y encontrar soluciones racionales.
+</p>
 
-      <h4>🌟 Luces</h4>
-      <ul>
-        <li>Humaniza la toma de decisiones.</li>
-        <li>Facilita la comunicación emocional.</li>
-        <li>Genera confianza y cooperación.</li>
-        <li>Permite resolver conflictos de raíz.</li>
-      </ul>
+<h4>🧠 Cómo procesa información tu cerebro</h4>
+<ul>
+<li>Analizas la información paso a paso antes de llegar a una conclusión.</li>
+<li>Buscas coherencia lógica entre los diferentes elementos de un problema.</li>
+<li>Tiendes a evaluar datos y evidencias antes de tomar decisiones.</li>
+<li>Prefieres comprender cómo funcionan las cosas antes de actuar.</li>
+</ul>
 
-      <h4>⚠️ Sombras</h4>
-      <ul>
-        <li>Paternalismo excesivo.</li>
-        <li>Dramatización constante.</li>
-        <li>Evasión del conflicto real.</li>
-        <li>Intrusión emocional.</li>
-      </ul>
-    `
-  },
+<h4>🧩 Cómo tomas decisiones</h4>
+<p>
+Las decisiones suelen basarse en información verificable y análisis racional. Este enfoque permite reducir errores y tomar decisiones fundamentadas, especialmente en contextos que requieren precisión o evaluación de riesgos.
+</p>
 
-  verde: {
-    titulo: "Dominancia Hemisférica Cerebral Verde – Margaret Thatcher",
-    texto: `
-      <p><strong>Hola colaborador</strong>, soy Margaret Thatcher.
-      Permíteme estructurar este conocimiento de manera eficiente.</p>
+<h4>🌟 Fortalezas cognitivas</h4>
+<ul>
+<li>Pensamiento crítico y capacidad analítica.</li>
+<li>Facilidad para detectar errores o inconsistencias.</li>
+<li>Capacidad para resolver problemas complejos.</li>
+<li>Alta objetividad en la evaluación de situaciones.</li>
+</ul>
 
-      <p>El orden, la planeación y el control son fundamentales.
-      El cambio no es cómodo, pero puede gestionarse.</p>
+<h4>⚠️ Riesgos cognitivos</h4>
+<ul>
+<li>Puede existir tendencia a analizar demasiado antes de actuar.</li>
+<li>En algunas situaciones la lógica puede dejar en segundo plano factores emocionales o sociales.</li>
+<li>La búsqueda de información perfecta puede retrasar decisiones.</li>
+</ul>
 
-      <h4>🌟 Luces</h4>
-      <ul>
-        <li>Anticipa riesgos y propone mitigaciones.</li>
-        <li>Organiza información en planes accionables.</li>
-        <li>Garantiza resultados y disciplina.</li>
-        <li>Ejecuta con enfoque a la tarea.</li>
-      </ul>
+<h4>📈 Desarrollo recomendado</h4>
+<p>
+Tu capacidad analítica es una fortaleza muy valiosa. Integrar perspectivas más intuitivas o sociales en el proceso de decisión puede enriquecer tu enfoque, permitiendo equilibrar precisión lógica con sensibilidad interpersonal.
+</p>
 
-      <h4>⚠️ Sombras</h4>
-      <ul>
-        <li>Parálisis por análisis.</li>
-        <li>Exceso de control.</li>
-        <li>Resistencia al cambio.</li>
-        <li>Dominancia autoritaria.</li>
-      </ul>
-    `
-  }
-};
+`
+},
 
+rojo:{
+titulo:"Dominancia Cognitiva Roja – Pensamiento Relacional y Empático",
+texto:`
 
-// =======================
-// UTILIDADES
-// =======================
-function shuffle(arr) {
-  return arr.sort(() => Math.random() - 0.5);
+<p>
+Tu perfil refleja una orientación cognitiva centrada en las <strong>personas, las emociones y la dinámica de las relaciones</strong>. Este estilo de pensamiento se caracteriza por una alta sensibilidad hacia el entorno social y hacia el impacto que las decisiones tienen en los demás.
+</p>
+
+<p>
+Las personas con dominancia roja suelen interpretar la información considerando tanto los hechos como el componente emocional o humano de las situaciones. Esto permite comprender mejor las motivaciones, necesidades y perspectivas de otras personas.
+</p>
+
+<h4>🧠 Cómo procesa información tu cerebro</h4>
+<ul>
+<li>Tiendes a percibir emociones y estados de ánimo en las personas.</li>
+<li>Tu cerebro evalúa cómo afectan las decisiones a quienes te rodean.</li>
+<li>Te resulta natural interpretar dinámicas sociales.</li>
+<li>Das importancia a la comunicación y al entendimiento mutuo.</li>
+</ul>
+
+<h4>🧩 Cómo tomas decisiones</h4>
+<p>
+Las decisiones en este perfil suelen considerar el impacto humano y relacional. Buscas soluciones que favorezcan la cooperación, el bienestar del grupo y la armonía interpersonal.
+</p>
+
+<h4>🌟 Fortalezas cognitivas</h4>
+<ul>
+<li>Alta empatía y comprensión emocional.</li>
+<li>Habilidad para construir relaciones de confianza.</li>
+<li>Capacidad para mediar o facilitar acuerdos.</li>
+<li>Comunicación clara y cercana.</li>
+</ul>
+
+<h4>⚠️ Riesgos cognitivos</h4>
+<ul>
+<li>En ocasiones puedes evitar conflictos aunque sea necesario enfrentarlos.</li>
+<li>Podrías priorizar demasiado la armonía del grupo.</li>
+<li>Algunas decisiones requieren mayor distancia emocional para evaluarse objetivamente.</li>
+</ul>
+
+<h4>📈 Desarrollo recomendado</h4>
+<p>
+Tu capacidad relacional es una gran fortaleza. Integrar herramientas de análisis y toma de decisiones estructurada puede ayudarte a equilibrar empatía con objetividad, ampliando tu capacidad de liderazgo y resolución de problemas.
+</p>
+
+`
+},
+
+verde:{
+titulo:"Dominancia Cognitiva Verde – Pensamiento Organizado y Ejecutor",
+texto:`
+
+<p>
+Tu perfil refleja una fuerte orientación hacia la <strong>estructura, organización y ejecución eficiente</strong>. Este estilo cognitivo se caracteriza por la tendencia a ordenar la información, establecer procedimientos claros y asegurar que las tareas se realicen de forma consistente.
+</p>
+
+<p>
+Las personas con dominancia verde suelen sentirse cómodas cuando existen reglas claras, procesos definidos y objetivos concretos. Tu cerebro tiende a buscar estabilidad y coherencia en la forma en que se realizan las actividades.
+</p>
+
+<h4>🧠 Cómo procesa información tu cerebro</h4>
+<ul>
+<li>Organizas mentalmente la información en pasos o procesos.</li>
+<li>Prefieres trabajar con métodos claros y definidos.</li>
+<li>Te resulta natural planificar antes de actuar.</li>
+<li>Valoras la consistencia y la eficiencia en la ejecución.</li>
+</ul>
+
+<h4>🧩 Cómo tomas decisiones</h4>
+<p>
+Las decisiones en este perfil suelen basarse en la planificación, el orden y la viabilidad práctica. Buscas soluciones que puedan implementarse de manera organizada y sostenible en el tiempo.
+</p>
+
+<h4>🌟 Fortalezas cognitivas</h4>
+<ul>
+<li>Alta capacidad de organización.</li>
+<li>Disciplina en la ejecución de tareas.</li>
+<li>Seguimiento constante de objetivos.</li>
+<li>Capacidad para mantener procesos estables.</li>
+</ul>
+
+<h4>⚠️ Riesgos cognitivos</h4>
+<ul>
+<li>En algunos contextos puede existir preferencia excesiva por la rutina.</li>
+<li>Los cambios rápidos o la ambigüedad pueden generar incomodidad.</li>
+<li>Podrías priorizar demasiado el proceso sobre la exploración de nuevas ideas.</li>
+</ul>
+
+<h4>📈 Desarrollo recomendado</h4>
+<p>
+Tu capacidad organizativa es esencial para convertir planes en resultados concretos. Integrar mayor flexibilidad y apertura a nuevas perspectivas puede enriquecer tu estilo, permitiendo combinar estructura con innovación cuando la situación lo requiera.
+</p>
+
+`
 }
 
-// =======================
-// RENDER MAPA (WIZARD)
-// =======================
-function renderMap() {
-  const cont = document.getElementById("mapas");
-  cont.innerHTML = "";
-
-  const title = document.createElement("h2");
-  title.textContent = `Mapa ${currentMap}`;
-  cont.appendChild(title);
-
-  const info = document.createElement("p");
-  info.innerHTML = "Selecciona <strong>8 palabras</strong>.";
-  cont.appendChild(info);
-
-  const words = [];
-  Object.entries(MAPS[currentMap]).forEach(([color, list]) => {
-    list.forEach(word => words.push({ word, color }));
-  });
-
-  shuffle(words);
-
-  const wrap = document.createElement("div");
-  wrap.className = "words";
-
-  words.forEach(item => {
-    const div = document.createElement("div");
-    div.className = "word";
-    div.textContent = item.word;
-    div.onclick = () => toggleWord(div, item.color);
-    wrap.appendChild(div);
-  });
-
-  cont.appendChild(wrap);
-}
-
-// =======================
-// SELECCIÓN
-// =======================
-function toggleWord(el, color) {
-  selections[currentMap] = selections[currentMap] || [];
-  const sel = selections[currentMap];
-
-  if (el.classList.contains("selected")) {
-    el.classList.remove("selected");
-    const idx = sel.indexOf(color);
-    if (idx > -1) sel.splice(idx, 1);
-  } else {
-    if (sel.length >= 8) {
-      alert("Solo puedes seleccionar 8 palabras");
-      return;
-    }
-    el.classList.add("selected");
-    sel.push(color);
-  }
-}
-
-// =======================
-// BOTONES WIZARD
-// =======================
-document.getElementById("next").onclick = () => {
-  if (!selections[currentMap] || selections[currentMap].length !== 8) {
-    alert("Selecciona exactamente 8 palabras antes de continuar");
-    return;
-  }
-
-  if (currentMap < 3) {
-    currentMap++;
-    renderMap();
-  } else {
-    showResults();
-  }
 };
 
-document.getElementById("prev").onclick = () => {
-  if (currentMap > 1) {
-    currentMap--;
-    renderMap();
-  }
-};
+/* =======================
+UTILIDADES
+======================= */
 
-// =======================
-// RESULTADOS
-// =======================
-function showResults() {
-  document.querySelector(".controls").style.display = "none";
-  document.getElementById("mapas").style.display = "none";
-
-  const result = document.getElementById("resultado");
-  result.style.display = "block";
-
-  const totals = { azul: 0, amarillo: 0, verde: 0, rojo: 0 };
-  Object.values(selections).flat().forEach(c => totals[c]++);
-
-  const orden = Object.entries(totals).sort((a, b) => b[1] - a[1]);
-  const dominante = orden[0][0];
-  const secundario = orden[1][0];
-
-  // personaje
-  let personaje = "";
-  let imgSrc = "";
-
-  if (dominante === "amarillo") { personaje = "Steve Jobs"; imgSrc = "/static/images/steve.png"; }
-  if (dominante === "azul") { personaje = "Mr. Spock"; imgSrc = "/static/images/spock.png"; }
-  if (dominante === "rojo") { personaje = "Mahatma Gandhi"; imgSrc = "/static/images/gandhi.png"; }
-  if (dominante === "verde") { personaje = "Margaret Thatcher"; imgSrc = "/static/images/tatcher.png"; }
-
-  document.getElementById("interpretacion").innerHTML = `
-    <h3>${INTERPRETACIONES[dominante].titulo}</h3>
-    <p>${INTERPRETACIONES[dominante].texto}</p>
-    <p><strong>Perfil secundario:</strong> ${secundario.toUpperCase()}</p>
-    <div style="text-align:center;margin-top:16px;">
-      <h4>Personaje representativo</h4>
-      <p><strong>${personaje}</strong></p>
-      <img src="${imgSrc}" style="max-width:180px;" />
-    </div>
-  `;
-
-  const ctx = document.getElementById("chart").getContext("2d");
-  if (chartInstance) chartInstance.destroy();
-
-  chartInstance = new Chart(ctx, {
-    type: "bar",
-    data: {
-      labels: ["Azul", "Amarillo", "Verde", "Rojo"],
-      datasets: [{
-        data: Object.values(totals)
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: { legend: { display: false } }
-    }
-  });
-
-  document.getElementById("descargar").disabled = false;
-
-  // guardar para PDF
-  window.__pdfData = { dominante, secundario, imgSrc };
+function shuffle(array){
+return array.sort(()=>Math.random()-0.5);
 }
 
-// =======================
-// PDF
-// =======================
-document.getElementById("descargar").onclick = async () => {
-  const { jsPDF } = window.jspdf;
-  const pdf = new jsPDF("p", "mm", "a4");
+function buildWordColorMap(mapData){
 
-  const logo = new Image();
-  logo.src = "/static/images/logo.png";
-  await new Promise(r => logo.onload = r);
+const map={};
 
-  const logoWidth = 80;
-  const ratio = logo.height / logo.width;
-  const logoHeight = logoWidth * ratio;
+Object.entries(mapData).forEach(([color,words])=>{
+words.forEach(w=>{
+if(!map[w]) map[w]=[];
+map[w].push(color);
+});
+});
 
-  pdf.addImage(logo, "PNG", (210 - logoWidth) / 2, 35, logoWidth, logoHeight);
+return map;
 
-  pdf.setFontSize(18);
-  pdf.text("Test de Preferencias Hemisféricas", 105, 100, { align: "center" });
-  pdf.setFontSize(12);
-  pdf.text("Reporte de resultados personalizados", 105, 112, { align: "center" });
+}
 
-  pdf.addPage();
+/* =======================
+MAPA
+======================= */
 
-  const canvas = await html2canvas(document.getElementById("resultado"), { scale: 2 });
-  const imgData = canvas.toDataURL("image/png");
-  const imgWidth = 190;
-  const imgHeight = (canvas.height * imgWidth) / canvas.width;
+function renderMap(){
 
-  pdf.addImage(imgData, "PNG", 10, 10, imgWidth, imgHeight);
-  pdf.save("Reporte_Test_Kreios.pdf");
+const cont=document.getElementById("mapas");
+cont.innerHTML="";
+
+const title=document.createElement("h2");
+title.textContent=`Mapa ${currentMap}`;
+cont.appendChild(title);
+
+const info=document.createElement("p");
+info.innerHTML="Selecciona <strong>8 palabras</strong>";
+cont.appendChild(info);
+
+const wordColorMap=buildWordColorMap(MAPS[currentMap]);
+const words=Object.keys(wordColorMap);
+
+shuffle(words);
+
+const container=document.createElement("div");
+container.className="word-container";
+
+words.forEach(word=>{
+
+const el=document.createElement("div");
+el.className="word";
+el.textContent=word;
+
+if(selections[currentMap]?.includes(word)){
+el.classList.add("selected");
+}
+
+el.onclick=()=>toggleWord(el,word);
+
+container.appendChild(el);
+
+});
+
+cont.appendChild(container);
+
+updateProgress();
+
+}
+
+/* =======================
+SELECCIÓN
+======================= */
+
+function toggleWord(el,word){
+
+if(!selections[currentMap]){
+selections[currentMap]=[];
+}
+
+const sel=selections[currentMap];
+
+if(el.classList.contains("selected")){
+
+el.classList.remove("selected");
+const index=sel.indexOf(word);
+if(index>-1){
+sel.splice(index,1);
+}
+
+}else{
+
+if(sel.length>=8){
+alert("Solo puedes seleccionar 8 palabras");
+return;
+}
+
+el.classList.add("selected");
+sel.push(word);
+
+}
+
+updateProgress();
+
+}
+
+/* =======================
+NAVEGACIÓN
+======================= */
+
+document.getElementById("next").onclick=()=>{
+
+if(!selections[currentMap] || selections[currentMap].length!==8){
+
+alert("Selecciona exactamente 8 palabras");
+return;
+
+}
+
+if(currentMap<3){
+
+currentMap++;
+renderMap();
+
+}else{
+
+showResults();
+
+}
+
 };
 
-// =======================
-// INIT
-// =======================
+document.getElementById("prev").onclick=()=>{
+
+if(currentMap>1){
+
+currentMap--;
+renderMap();
+
+}
+
+};
+
+/* =======================
+RESULTADOS
+======================= */
+
+function showResults(){
+
+document.getElementById("intro").style.display="none";
+document.getElementById("mapSection").style.display="none";
+document.querySelector(".controls").style.display="none";
+
+document.getElementById("resultado").style.display="block";
+
+const totals={azul:0,amarillo:0,rojo:0,verde:0};
+
+Object.entries(selections).forEach(([map,words])=>{
+
+const mapColors=buildWordColorMap(MAPS[parseInt(map)]);
+
+words.forEach(w=>{
+mapColors[w].forEach(c=>totals[c]++);
+});
+
+});
+
+const orden=Object.entries(totals).sort((a,b)=>b[1]-a[1]);
+
+const dominante=orden[0][0];
+const secundario=orden[1][0];
+
+document.getElementById("interpretacion").innerHTML=`
+
+<h3>🧠 Estos son tus resultados</h3>
+
+<h3>${INTERPRETACIONES[dominante].titulo}</h3>
+
+${INTERPRETACIONES[dominante].texto}
+
+<p><strong>Perfil secundario:</strong> ${secundario.toUpperCase()}</p>
+
+<p>
+Tu cerebro utiliza los cuatro estilos de pensamiento. 
+Este resultado muestra cuál tiendes a utilizar con mayor frecuencia al analizar situaciones, resolver problemas o tomar decisiones.
+</p>
+
+`;
+
+renderChart(totals);
+
+}
+
+/* =======================
+RADAR CHART
+======================= */
+
+function renderChart(totals){
+
+const ctx=document.getElementById("chart").getContext("2d");
+
+if(chartInstance){
+chartInstance.destroy();
+}
+
+chartInstance=new Chart(ctx,{
+type:"radar",
+data:{
+labels:["Azul","Amarillo","Rojo","Verde"],
+datasets:[{
+label:"Perfil cognitivo",
+data:[
+totals.azul,
+totals.amarillo,
+totals.rojo,
+totals.verde
+],
+backgroundColor:"rgba(0,0,0,0.1)",
+borderColor:"#333",
+pointBackgroundColor:[
+"#007BFF",
+"#FFD700",
+"#E74C3C",
+"#2ECC71"
+],
+pointBorderColor:"#fff",
+pointRadius:6
+}]
+},
+options:{
+responsive:true,
+plugins:{
+legend:{
+display:false
+}
+},
+scales:{
+r:{
+beginAtZero:true,
+ticks:{
+stepSize:2
+}
+}
+}
+}
+});
+
+}
+
+/* =======================
+PROGRESO
+======================= */
+
+function updateProgress(){
+
+const count=selections[currentMap]?.length || 0;
+const percent=(count/8)*100;
+
+document.getElementById("progress-bar").style.width=percent+"%";
+document.getElementById("count").textContent=count;
+
+}
+
+/* =======================
+INIT
+======================= */
+
 renderMap();
