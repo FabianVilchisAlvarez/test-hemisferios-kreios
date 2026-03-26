@@ -1,6 +1,17 @@
+/* =======================
+ESTADO GLOBAL
+======================= */
+
 let currentMap = 1;
 const selections = {};
 let chartInstance = null;
+let esperandoDesempate = false;
+let coloresEmpatados = [];
+
+let userData = {
+    nombre: "",
+    correo: ""
+};
 
 /* =======================
 INTERPRETACIONES
@@ -8,221 +19,96 @@ INTERPRETACIONES
 
 const INTERPRETACIONES = {
 
-amarillo:{
-titulo:"Dominancia Cognitiva Amarilla – Pensamiento Creativo e Innovador",
-texto:`
-
-<p>
-Tu perfil refleja una predominancia del <strong>pensamiento creativo, conceptual y orientado hacia la exploración de nuevas posibilidades</strong>. Este tipo de procesamiento cognitivo se caracteriza por una fuerte capacidad para imaginar escenarios, generar ideas y conectar conceptos aparentemente diferentes.
-</p>
-
-<p>
-Las personas con dominancia amarilla suelen procesar la información de manera global. Esto significa que su cerebro tiende a enfocarse primero en el panorama general antes que en los detalles específicos. Es común que tu mente funcione de forma asociativa, conectando ideas rápidamente y generando nuevas interpretaciones o soluciones.
-</p>
-
-<h4>🧠 Cómo procesa información tu cerebro</h4>
-<ul>
-<li>Tiendes a captar el contexto general antes de analizar los detalles.</li>
-<li>Tu mente conecta conceptos y genera asociaciones con rapidez.</li>
-<li>Prefieres explorar posibilidades y alternativas antes que seguir estructuras rígidas.</li>
-<li>Tu pensamiento suele orientarse hacia el futuro y hacia lo que podría ser posible.</li>
-</ul>
-
-<h4>🧩 Cómo tomas decisiones</h4>
-<p>
-Las decisiones en este perfil suelen surgir de una combinación entre intuición, creatividad y visión estratégica. En lugar de centrarse exclusivamente en datos concretos, tu cerebro tiende a evaluar ideas desde su potencial o impacto futuro.
-</p>
-
-<h4>🌟 Fortalezas cognitivas</h4>
-<ul>
-<li>Alta creatividad y pensamiento innovador.</li>
-<li>Capacidad para generar ideas originales.</li>
-<li>Visión estratégica a largo plazo.</li>
-<li>Facilidad para encontrar soluciones poco convencionales.</li>
-</ul>
-
-<h4>⚠️ Riesgos cognitivos</h4>
-<ul>
-<li>Puede existir tendencia a pasar rápidamente de una idea a otra.</li>
-<li>Algunas ideas pueden necesitar más análisis antes de implementarse.</li>
-<li>Las tareas repetitivas o altamente estructuradas pueden resultar poco motivadoras.</li>
-</ul>
-
-<h4>📈 Desarrollo recomendado</h4>
-<p>
-Tu capacidad para generar ideas es una gran fortaleza. Para potenciar aún más tu perfil, resulta útil complementar la creatividad con herramientas de organización, priorización y evaluación práctica de proyectos. Cuando la creatividad se combina con estructura, el impacto de tus ideas puede ser mucho mayor.
-</p>
-
-`
-},
-
 azul:{
-titulo:"Dominancia Cognitiva Azul – Pensamiento Analítico y Lógico",
-texto:`
-
-<p>
-Tu perfil muestra una clara predominancia del <strong>pensamiento analítico, lógico y estructurado</strong>. Este estilo cognitivo se caracteriza por la tendencia a procesar la información de forma detallada, buscando comprender las relaciones entre datos, causas y consecuencias.
-</p>
-
-<p>
-Las personas con dominancia azul suelen sentirse cómodas cuando pueden analizar información de manera objetiva. Tu cerebro tiende a organizar mentalmente los problemas en partes más pequeñas para entenderlos mejor y encontrar soluciones racionales.
-</p>
-
-<h4>🧠 Cómo procesa información tu cerebro</h4>
-<ul>
-<li>Analizas la información paso a paso antes de llegar a una conclusión.</li>
-<li>Buscas coherencia lógica entre los diferentes elementos de un problema.</li>
-<li>Tiendes a evaluar datos y evidencias antes de tomar decisiones.</li>
-<li>Prefieres comprender cómo funcionan las cosas antes de actuar.</li>
-</ul>
-
-<h4>🧩 Cómo tomas decisiones</h4>
-<p>
-Las decisiones suelen basarse en información verificable y análisis racional. Este enfoque permite reducir errores y tomar decisiones fundamentadas, especialmente en contextos que requieren precisión o evaluación de riesgos.
-</p>
-
-<h4>🌟 Fortalezas cognitivas</h4>
-<ul>
-<li>Pensamiento crítico y capacidad analítica.</li>
-<li>Facilidad para detectar errores o inconsistencias.</li>
-<li>Capacidad para resolver problemas complejos.</li>
-<li>Alta objetividad en la evaluación de situaciones.</li>
-</ul>
-
-<h4>⚠️ Riesgos cognitivos</h4>
-<ul>
-<li>Puede existir tendencia a analizar demasiado antes de actuar.</li>
-<li>En algunas situaciones la lógica puede dejar en segundo plano factores emocionales o sociales.</li>
-<li>La búsqueda de información perfecta puede retrasar decisiones.</li>
-</ul>
-
-<h4>📈 Desarrollo recomendado</h4>
-<p>
-Tu capacidad analítica es una fortaleza muy valiosa. Integrar perspectivas más intuitivas o sociales en el proceso de decisión puede enriquecer tu enfoque, permitiendo equilibrar precisión lógica con sensibilidad interpersonal.
-</p>
-
-`
-},
-
-rojo:{
-titulo:"Dominancia Cognitiva Roja – Pensamiento Relacional y Empático",
-texto:`
-
-<p>
-Tu perfil refleja una orientación cognitiva centrada en las <strong>personas, las emociones y la dinámica de las relaciones</strong>. Este estilo de pensamiento se caracteriza por una alta sensibilidad hacia el entorno social y hacia el impacto que las decisiones tienen en los demás.
-</p>
-
-<p>
-Las personas con dominancia roja suelen interpretar la información considerando tanto los hechos como el componente emocional o humano de las situaciones. Esto permite comprender mejor las motivaciones, necesidades y perspectivas de otras personas.
-</p>
-
-<h4>🧠 Cómo procesa información tu cerebro</h4>
-<ul>
-<li>Tiendes a percibir emociones y estados de ánimo en las personas.</li>
-<li>Tu cerebro evalúa cómo afectan las decisiones a quienes te rodean.</li>
-<li>Te resulta natural interpretar dinámicas sociales.</li>
-<li>Das importancia a la comunicación y al entendimiento mutuo.</li>
-</ul>
-
-<h4>🧩 Cómo tomas decisiones</h4>
-<p>
-Las decisiones en este perfil suelen considerar el impacto humano y relacional. Buscas soluciones que favorezcan la cooperación, el bienestar del grupo y la armonía interpersonal.
-</p>
-
-<h4>🌟 Fortalezas cognitivas</h4>
-<ul>
-<li>Alta empatía y comprensión emocional.</li>
-<li>Habilidad para construir relaciones de confianza.</li>
-<li>Capacidad para mediar o facilitar acuerdos.</li>
-<li>Comunicación clara y cercana.</li>
-</ul>
-
-<h4>⚠️ Riesgos cognitivos</h4>
-<ul>
-<li>En ocasiones puedes evitar conflictos aunque sea necesario enfrentarlos.</li>
-<li>Podrías priorizar demasiado la armonía del grupo.</li>
-<li>Algunas decisiones requieren mayor distancia emocional para evaluarse objetivamente.</li>
-</ul>
-
-<h4>📈 Desarrollo recomendado</h4>
-<p>
-Tu capacidad relacional es una gran fortaleza. Integrar herramientas de análisis y toma de decisiones estructurada puede ayudarte a equilibrar empatía con objetividad, ampliando tu capacidad de liderazgo y resolución de problemas.
-</p>
-
-`
+titulo:"Azul — Corteza Cerebral Izquierda",
+texto:"Tu mente trabaja con lógica, datos y análisis. Eres preciso, crítico y orientado a resultados medibles. En los equipos eres quien exige evidencia y hace las preguntas difíciles antes de actuar."
 },
 
 verde:{
-titulo:"Dominancia Cognitiva Verde – Pensamiento Organizado y Ejecutor",
-texto:`
+titulo:"Verde — Sistema Límbico Izquierdo",
+texto:"Piensas de forma secuencial, organizada y metódica. Valoras el orden, los procedimientos y el detalle. Eres el pilar confiable que mantiene los proyectos en marcha y las promesas cumplidas."
+},
 
-<p>
-Tu perfil refleja una fuerte orientación hacia la <strong>estructura, organización y ejecución eficiente</strong>. Este estilo cognitivo se caracteriza por la tendencia a ordenar la información, establecer procedimientos claros y asegurar que las tareas se realicen de forma consistente.
-</p>
+rojo:{
+titulo:"Rojo — Sistema Límbico Derecho",
+texto:"Tu inteligencia es emocional e interpersonal. Conectas con las personas de forma genuina, escuchas activamente y construyes relaciones sólidas. Eres el corazón y la energía del equipo"
+},
 
-<p>
-Las personas con dominancia verde suelen sentirse cómodas cuando existen reglas claras, procesos definidos y objetivos concretos. Tu cerebro tiende a buscar estabilidad y coherencia en la forma en que se realizan las actividades.
-</p>
-
-<h4>🧠 Cómo procesa información tu cerebro</h4>
-<ul>
-<li>Organizas mentalmente la información en pasos o procesos.</li>
-<li>Prefieres trabajar con métodos claros y definidos.</li>
-<li>Te resulta natural planificar antes de actuar.</li>
-<li>Valoras la consistencia y la eficiencia en la ejecución.</li>
-</ul>
-
-<h4>🧩 Cómo tomas decisiones</h4>
-<p>
-Las decisiones en este perfil suelen basarse en la planificación, el orden y la viabilidad práctica. Buscas soluciones que puedan implementarse de manera organizada y sostenible en el tiempo.
-</p>
-
-<h4>🌟 Fortalezas cognitivas</h4>
-<ul>
-<li>Alta capacidad de organización.</li>
-<li>Disciplina en la ejecución de tareas.</li>
-<li>Seguimiento constante de objetivos.</li>
-<li>Capacidad para mantener procesos estables.</li>
-</ul>
-
-<h4>⚠️ Riesgos cognitivos</h4>
-<ul>
-<li>En algunos contextos puede existir preferencia excesiva por la rutina.</li>
-<li>Los cambios rápidos o la ambigüedad pueden generar incomodidad.</li>
-<li>Podrías priorizar demasiado el proceso sobre la exploración de nuevas ideas.</li>
-</ul>
-
-<h4>📈 Desarrollo recomendado</h4>
-<p>
-Tu capacidad organizativa es esencial para convertir planes en resultados concretos. Integrar mayor flexibilidad y apertura a nuevas perspectivas puede enriquecer tu estilo, permitiendo combinar estructura con innovación cuando la situación lo requiera.
-</p>
-
-`
+amarillo:{
+titulo:"Amarillo — Corteza Cerebral Derecha",
+texto:"Piensas de forma holística, creativa e intuitiva. Ves el panorama completo, generas ideas originales y te sientes cómodo en la ambigüedad. Eres el visionario que inspira al equipo."
 }
 
 };
 
 /* =======================
-UTILIDADES
+FRASES DESEMPATE
 ======================= */
 
-function shuffle(array){
-return array.sort(()=>Math.random()-0.5);
+const FRASES_EMPATE = {
+azul:"Prefiero analizar los datos con calma antes de tomar cualquier decisión.",
+verde:"Me siento más seguro cuando hay un plan claro y ordenado.",
+rojo:"Lo más importante para mí son las personas y el ambiente del equipo.",
+amarillo:"Me emociona explorar ideas nuevas y ver el panorama completo."
+};
+
+
+/* =======================
+SEGMENTOS
+======================= */
+
+function crearSegmentos(){
+    const cont = document.getElementById("barraSegmentos");
+    cont.innerHTML = "";
+
+    for(let i=0; i<8; i++){
+        const seg = document.createElement("div");
+        seg.className = "segmento";
+        cont.appendChild(seg);
+    }
 }
 
-function buildWordColorMap(mapData){
+/* =======================
+INIT
+======================= */
 
-const map={};
+document.addEventListener("DOMContentLoaded", () => {
 
-Object.entries(mapData).forEach(([color,words])=>{
-words.forEach(w=>{
-if(!map[w]) map[w]=[];
-map[w].push(color);
+    document.getElementById("startBtn").addEventListener("click", iniciarTest);
+    document.getElementById("next").addEventListener("click", nextMap);
+    document.getElementById("prev").addEventListener("click", prevMap);
+    document.getElementById("descargar").addEventListener("click", descargarPDF);
+
 });
-});
 
-return map;
+/* =======================
+INICIAR TEST
+======================= */
 
+function iniciarTest(){
+
+    const nombre = document.getElementById("nombre").value.trim();
+    const correo = document.getElementById("correo").value.trim();
+
+    if(nombre === "" || correo === ""){
+        alert("Completa los datos");
+        return;
+    }
+
+    crearSegmentos();
+
+    userData.nombre = nombre;
+    userData.correo = correo;
+
+    document.getElementById("startScreen").style.display = "none";
+
+    document.querySelector(".topbar").style.display = "flex";
+    document.getElementById("intro").style.display = "block";
+    document.getElementById("mapSection").style.display = "block";
+    document.querySelector(".controls").style.display = "flex";
+    document.querySelector(".footer").style.display = "block";
+
+    renderMap();
 }
 
 /* =======================
@@ -231,45 +117,39 @@ MAPA
 
 function renderMap(){
 
-const cont=document.getElementById("mapas");
-cont.innerHTML="";
+    const cont = document.getElementById("mapas");
+    cont.innerHTML = "";
 
-const title=document.createElement("h2");
-title.textContent=`Mapa ${currentMap}`;
-cont.appendChild(title);
+    const title = document.createElement("h2");
+    title.textContent = `Mapa ${currentMap}`;
+    cont.appendChild(title);
 
-const info=document.createElement("p");
-info.innerHTML="Selecciona <strong>8 palabras</strong>";
-cont.appendChild(info);
+    const wordColorMap = buildWordColorMap(MAPS[currentMap]);
+    const words = Object.keys(wordColorMap);
 
-const wordColorMap=buildWordColorMap(MAPS[currentMap]);
-const words=Object.keys(wordColorMap);
+    shuffle(words);
 
-shuffle(words);
+    const container = document.createElement("div");
+    container.className = "word-container";
 
-const container=document.createElement("div");
-container.className="word-container";
+    words.forEach(word=>{
 
-words.forEach(word=>{
+        const el = document.createElement("div");
+        el.className = "word";
+        el.textContent = word;
 
-const el=document.createElement("div");
-el.className="word";
-el.textContent=word;
+        if(selections[currentMap]?.includes(word)){
+            el.classList.add("selected");
+        }
 
-if(selections[currentMap]?.includes(word)){
-el.classList.add("selected");
-}
+        el.onclick = ()=>toggleWord(el,word);
 
-el.onclick=()=>toggleWord(el,word);
+        container.appendChild(el);
+    });
 
-container.appendChild(el);
+    cont.appendChild(container);
 
-});
-
-cont.appendChild(container);
-
-updateProgress();
-
+    updateProgress();
 }
 
 /* =======================
@@ -278,177 +158,302 @@ SELECCIÓN
 
 function toggleWord(el,word){
 
-if(!selections[currentMap]){
-selections[currentMap]=[];
-}
+    if(!selections[currentMap]) selections[currentMap] = [];
 
-const sel=selections[currentMap];
+    const sel = selections[currentMap];
 
-if(el.classList.contains("selected")){
+    if(el.classList.contains("selected")){
 
-el.classList.remove("selected");
-const index=sel.indexOf(word);
-if(index>-1){
-sel.splice(index,1);
-}
+        el.classList.remove("selected");
+        sel.splice(sel.indexOf(word),1);
 
-}else{
+    }else{
 
-if(sel.length>=8){
-alert("Solo puedes seleccionar 8 palabras");
-return;
-}
+        if(sel.length >= 8){
+            alert("Solo puedes seleccionar 8 palabras");
+            return;
+        }
 
-el.classList.add("selected");
-sel.push(word);
+        el.classList.add("selected");
+        sel.push(word);
+    }
 
-}
-
-updateProgress();
-
+    updateProgress();
 }
 
 /* =======================
 NAVEGACIÓN
 ======================= */
 
-document.getElementById("next").onclick=()=>{
+function nextMap(){
 
-if(!selections[currentMap] || selections[currentMap].length!==8){
+    if(!selections[currentMap] || selections[currentMap].length !== 8){
+        alert("Selecciona 8 palabras");
+        return;
+    }
 
-alert("Selecciona exactamente 8 palabras");
-return;
+    // 🔥 FORZAMOS 3 MAPAS (seguro y limpio)
+    if(currentMap < 3){
 
+        currentMap++;
+        renderMap();
+
+    }else{
+        calcularResultados();
+    }
 }
 
-if(currentMap<3){
+function prevMap(){
 
-currentMap++;
-renderMap();
-
-}else{
-
-showResults();
-
+    if(currentMap > 1){
+        currentMap--;
+        renderMap();
+    }
 }
-
-};
-
-document.getElementById("prev").onclick=()=>{
-
-if(currentMap>1){
-
-currentMap--;
-renderMap();
-
-}
-
-};
 
 /* =======================
-RESULTADOS
+CALCULAR RESULTADOS
 ======================= */
 
-function showResults(){
+function calcularResultados(){
 
-document.getElementById("intro").style.display="none";
-document.getElementById("mapSection").style.display="none";
-document.querySelector(".controls").style.display="none";
+    const totals = {azul:0,amarillo:0,rojo:0,verde:0};
 
-document.getElementById("resultado").style.display="block";
+    Object.entries(selections).forEach(([map,words])=>{
+        const mapColors = buildWordColorMap(MAPS[map]);
+        words.forEach(w=>{
+            mapColors[w].forEach(c=>totals[c]++);
+        });
+    });
 
-const totals={azul:0,amarillo:0,rojo:0,verde:0};
+    const orden = Object.entries(totals).sort((a,b)=>b[1]-a[1]);
+    const max = orden[0][1];
 
-Object.entries(selections).forEach(([map,words])=>{
+    coloresEmpatados = orden.filter(([c,v])=>v===max).map(x=>x[0]);
 
-const mapColors=buildWordColorMap(MAPS[parseInt(map)]);
-
-words.forEach(w=>{
-mapColors[w].forEach(c=>totals[c]++);
-});
-
-});
-
-const orden=Object.entries(totals).sort((a,b)=>b[1]-a[1]);
-
-const dominante=orden[0][0];
-const secundario=orden[1][0];
-
-document.getElementById("interpretacion").innerHTML=`
-
-<h3>🧠 Estos son tus resultados</h3>
-
-<h3>${INTERPRETACIONES[dominante].titulo}</h3>
-
-${INTERPRETACIONES[dominante].texto}
-
-<p><strong>Perfil secundario:</strong> ${secundario.toUpperCase()}</p>
-
-<p>
-Tu cerebro utiliza los cuatro estilos de pensamiento. 
-Este resultado muestra cuál tiendes a utilizar con mayor frecuencia al analizar situaciones, resolver problemas o tomar decisiones.
-</p>
-
-`;
-
-renderChart(totals);
-
+    if(coloresEmpatados.length > 1){
+        mostrarDesempate();
+    }else{
+        mostrarResultadoFinal(coloresEmpatados[0], totals);
+    }
 }
 
 /* =======================
-RADAR CHART
+PANTALLA DESEMPATE
+======================= */
+
+function mostrarDesempate(){
+
+    esperandoDesempate = true;
+
+    document.getElementById("mapSection").style.display = "none";
+    document.querySelector(".controls").style.display = "none";
+    document.getElementById("resultado").style.display = "block";
+
+    let html = `
+        <div class="empate-box">
+
+            <h2 class="empate-titulo">
+                Necesitamos una pista más
+            </h2>
+
+            <p class="empate-desc">
+                Tus selecciones resultaron muy similares entre varios perfiles.
+                Lee cada frase con calma y selecciona la que mejor te describa
+                en tu día a día, no como quisieras ser.
+            </p>
+
+            <div class="empate-frases">
+    `;
+
+    coloresEmpatados.forEach(color=>{
+        html += `
+            <div class="card-empate"
+                onclick="resolverEmpate('${color}')">
+                <p>${FRASES_EMPATE[color]}</p>
+            </div>
+        `;
+    });
+
+    html += `
+            </div>
+        </div>
+    `;
+
+    document.getElementById("dashboard").innerHTML = html;
+}
+/* =======================
+RESOLVER EMPATE
+======================= */
+
+function resolverEmpate(colorElegido){
+
+    esperandoDesempate = false;
+
+    const totals = {azul:0,amarillo:0,rojo:0,verde:0};
+
+    Object.entries(selections).forEach(([map,words])=>{
+        const mapColors = buildWordColorMap(MAPS[map]);
+        words.forEach(w=>{
+            mapColors[w].forEach(c=>totals[c]++);
+        });
+    });
+
+    mostrarResultadoFinal(colorElegido, totals);
+}
+
+function mostrarResultadoFinal(dominante, totals){
+
+    document.getElementById("mapSection").style.display = "none";
+    document.querySelector(".controls").style.display = "none";
+    document.getElementById("resultado").style.display = "block";
+    document.getElementById("intro").style.display = "none";
+
+    const totalPalabras = Object.values(totals).reduce((a,b)=>a+b,0);
+    const palabrasTop = obtenerPalabrasDominantes(dominante);
+
+    // 🔥 separar titulo y subtitulo correctamente
+    const partesTitulo = INTERPRETACIONES[dominante].titulo.split("—");
+    const tituloColor = partesTitulo[0].trim(); // Amarillo
+    const subtitulo = partesTitulo[1]?.trim() || "";
+
+    let html = `
+<div class="dashboard">
+
+    <!-- HEADER PRO -->
+    <div style="
+        text-align:center;
+        margin-bottom:25px;
+    ">
+        <h2 style="
+            margin-bottom:5px;
+            font-size:26px;
+        ">
+            🧠 Perfil Cognitivo
+        </h2>
+
+        <div style="
+            font-weight:600;
+            font-size:16px;
+        ">
+            ${userData.nombre}
+        </div>
+
+        <div style="
+            font-size:13px;
+            color:#777;
+        ">
+            ${userData.correo}
+        </div>
+
+        <p style="
+            color:#555;
+            margin-top:10px;
+            max-width:600px;
+            margin-left:auto;
+            margin-right:auto;
+            font-size:14px;
+        ">
+            Interpretación de tu estilo dominante de pensamiento, toma de decisiones y comportamiento.
+        </p>
+    </div>
+
+    <!-- PERFIL DOMINANTE -->
+    <div class="perfil-dominante bg-${dominante}">
+
+        <div style="text-align:center; margin-bottom:10px;">
+            
+            <div style="
+                font-size:30px;
+                font-weight:bold;
+                text-transform:uppercase;
+            ">
+                ${tituloColor}
+            </div>
+
+            <div style="
+                font-size:15px;
+                opacity:0.9;
+                margin-top:3px;
+            ">
+                ${subtitulo}
+            </div>
+
+        </div>
+
+        <p>${INTERPRETACIONES[dominante].texto}</p>
+
+        <div style="margin-top:15px;">
+            <strong>Palabras clave:</strong>
+            <div style="display:flex; flex-wrap:wrap; gap:8px;">
+                ${palabrasTop.map(p=>`<span style="
+                    background:#ffffff33;
+                    padding:6px 10px;
+                    border-radius:8px;
+                    font-size:12px;
+                ">${p}</span>`).join("")}
+            </div>
+        </div>
+
+    </div>
+
+    <!-- RESULTADOS -->
+    <div class="grid-resultados">
+`;
+
+    Object.entries(totals).forEach(([color,val])=>{
+        const porcentaje = Math.round((val/totalPalabras)*100);
+
+        html += `
+        <div class="card-resultado ${color}">
+            <h4>${color.toUpperCase()}</h4>
+            <p class="valor">${val}</p>
+            <p class="porcentaje">${porcentaje}%</p>
+        </div>
+        `;
+    });
+
+    html += `</div></div>`;
+
+    document.getElementById("dashboard").innerHTML = html;
+
+    renderChart(totals);
+}
+
+/* =======================
+CHART (50% MÁS CHICA)
 ======================= */
 
 function renderChart(totals){
 
-const ctx=document.getElementById("chart").getContext("2d");
+    const ctx = document.getElementById("chart");
 
-if(chartInstance){
-chartInstance.destroy();
-}
+    ctx.style.maxWidth = "400px";
+    ctx.style.margin = "0 auto";
 
-chartInstance=new Chart(ctx,{
-type:"radar",
-data:{
-labels:["Azul","Amarillo","Rojo","Verde"],
-datasets:[{
-label:"Perfil cognitivo",
-data:[
-totals.azul,
-totals.amarillo,
-totals.rojo,
-totals.verde
-],
-backgroundColor:"rgba(0,0,0,0.1)",
-borderColor:"#333",
-pointBackgroundColor:[
-"#007BFF",
-"#FFD700",
-"#E74C3C",
-"#2ECC71"
-],
-pointBorderColor:"#fff",
-pointRadius:6
-}]
-},
-options:{
-responsive:true,
-plugins:{
-legend:{
-display:false
-}
-},
-scales:{
-r:{
-beginAtZero:true,
-ticks:{
-stepSize:2
-}
-}
-}
-}
-});
+    if(chartInstance) chartInstance.destroy();
 
+    chartInstance = new Chart(ctx,{
+        type:"radar",
+        data:{
+            labels:["Azul","Amarillo","Rojo","Verde"],
+            datasets:[{
+                data:[
+                    totals.azul,
+                    totals.amarillo,
+                    totals.rojo,
+                    totals.verde
+                ]
+            }]
+        },
+        options:{
+            responsive:true,
+            maintainAspectRatio:true,
+            scales:{
+                r:{ ticks:{ display:false } }
+            }
+        }
+    });
 }
 
 /* =======================
@@ -457,55 +462,309 @@ PROGRESO
 
 function updateProgress(){
 
-const count=selections[currentMap]?.length || 0;
-const percent=(count/8)*100;
+    const count = selections[currentMap]?.length || 0;
 
-document.getElementById("progress-bar").style.width=percent+"%";
-document.getElementById("count").textContent=count;
+    // contador numérico
+    const countEl = document.getElementById("count");
+    if(countEl) countEl.textContent = count;
 
+    // texto faltantes
+    const faltantesEl = document.getElementById("faltantes");
+    if(faltantesEl) faltantesEl.textContent = "Faltan " + (8 - count);
+
+    // segmentos visuales
+    const segmentos = document.querySelectorAll(".segmento");
+
+    segmentos.forEach((seg, i)=>{
+        if(i < count){
+            seg.classList.add("activo");
+        }else{
+            seg.classList.remove("activo");
+        }
+    });
 }
 
 /* =======================
-INIT
+UTILIDADES
 ======================= */
 
-renderMap();
-
-/* =======================
-DESCARGAR PDF
-======================= */
-
-document.getElementById("descargar").addEventListener("click", function(){
-
-const { jsPDF } = window.jspdf;
-
-const elemento = document.getElementById("resultado");
-
-html2canvas(elemento).then(canvas => {
-
-const imgData = canvas.toDataURL("image/png");
-
-const pdf = new jsPDF("p", "mm", "a4");
-
-const imgWidth = 190;
-const pageHeight = 297;
-const imgHeight = canvas.height * imgWidth / canvas.width;
-let heightLeft = imgHeight;
-
-let position = 10;
-
-pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
-heightLeft -= pageHeight;
-
-while (heightLeft > 0) {
-position = heightLeft - imgHeight;
-pdf.addPage();
-pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
-heightLeft -= pageHeight;
+function shuffle(array){
+    return array.sort(()=>Math.random()-0.5);
 }
 
-pdf.save("resultado_test_hemisferios.pdf");
+function buildWordColorMap(mapData){
 
+    const map = {};
+
+    Object.entries(mapData).forEach(([color,words])=>{
+        words.forEach(w=>{
+            if(!map[w]) map[w] = [];
+            map[w].push(color);
+        });
+    });
+
+    return map;
+}
+
+function obtenerPalabrasDominantes(colorDominante){
+
+    let palabras = [];
+
+    Object.entries(selections).forEach(([map,words])=>{
+
+        const mapColors = buildWordColorMap(MAPS[map]);
+
+        words.forEach(w=>{
+            if(mapColors[w].includes(colorDominante)){
+                palabras.push(w);
+            }
+        });
+
+    });
+
+    return [...new Set(palabras)].slice(0,10);
+}
+
+
+/* =======================
+DOMINANTE
+======================= */
+
+function obtenerDominante(){
+
+    const totals = calcularTotalesPDF();
+
+    let max = 0;
+    let dominante = "rojo";
+
+    Object.entries(totals).forEach(([color, val])=>{
+        if(val > max){
+            max = val;
+            dominante = color;
+        }
+    });
+
+    return dominante;
+}
+
+function calcularTotalesPDF(){
+
+    const totals = {azul:0,amarillo:0,rojo:0,verde:0};
+
+    Object.entries(selections).forEach(([map,words])=>{
+        const mapColors = buildWordColorMap(MAPS[map]);
+
+        words.forEach(w=>{
+            mapColors[w].forEach(c=>totals[c]++);
+        });
+    });
+
+    return totals;
+}
+
+/* =======================
+PDF
+======================= */
+
+async function descargarPDF(){
+
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF("p", "mm", "a4");
+
+    const dominante = obtenerDominante();
+    const totals = calcularTotalesPDF();
+    const palabras = obtenerPalabrasDominantes(dominante);
+
+    const total = Object.values(totals).reduce((a,b)=>a+b,0);
+
+    // 🔥 separar título y subtítulo
+    const partesTitulo = INTERPRETACIONES[dominante].titulo.split("—");
+    const tituloColor = partesTitulo[0].trim().toUpperCase();
+    const subtitulo = partesTitulo[1]?.trim() || "";
+
+    const colores = {
+        azul: [0,114,255],
+        amarillo: [247,183,49],
+        rojo: [255,65,108],
+        verde: [17,153,142]
+    };
+
+    const colorRGB = colores[dominante];
+
+    let y = 20;
+
+    // ======================
+    // HEADER
+    // ======================
+
+    pdf.setFont("helvetica","bold");
+    pdf.setFontSize(20);
+    pdf.text("Resultados", 105, y, {align:"center"});
+
+    y += 10;
+
+    pdf.setFontSize(14);
+    pdf.setTextColor(100);
+    pdf.text("Tu perfil cognitivo", 105, y, {align:"center"});
+
+    y += 8;
+
+    pdf.setFontSize(10);
+    pdf.text(`${userData.nombre} — ${userData.correo}`, 105, y, {align:"center"});
+
+    y += 12;
+
+    // ======================
+    // CAJA PRINCIPAL
+    // ======================
+
+    pdf.setFillColor(...colorRGB);
+    pdf.roundedRect(15, y, 180, 40, 5, 5, "F"); // 🔥 más alta
+
+    pdf.setTextColor(255,255,255);
+
+    // 🔥 TÍTULO GRANDE
+    pdf.setFont("helvetica","bold");
+    pdf.setFontSize(16);
+    pdf.text(tituloColor, 105, y+10, { align:"center" });
+
+    // 🔥 SUBTÍTULO
+    pdf.setFont("helvetica","normal");
+    pdf.setFontSize(11);
+    pdf.text(subtitulo, 105, y+16, { align:"center" });
+
+    // 🔥 TEXTO DESCRIPTIVO
+    pdf.setFontSize(10);
+
+    const texto = pdf.splitTextToSize(
+        INTERPRETACIONES[dominante].texto,
+        170
+    );
+
+    pdf.text(texto, 20, y+24);
+
+    y += 50;
+
+    // ======================
+    // PALABRAS CLAVE
+    // ======================
+
+    pdf.setTextColor(0);
+    pdf.setFont("helvetica","bold");
+    pdf.text("Palabras clave:", 15, y);
+
+    y += 6;
+
+    pdf.setFont("helvetica","normal");
+
+    let x = 15;
+
+    palabras.forEach(p => {
+
+        const w = pdf.getTextWidth(p) + 6;
+
+        if(x + w > 190){
+            x = 15;
+            y += 8;
+        }
+
+        pdf.setFillColor(230,230,230);
+        pdf.roundedRect(x, y-4, w, 6, 2, 2, "F");
+
+        pdf.setTextColor(0);
+        pdf.text(p, x+3, y);
+
+        x += w + 3;
+    });
+
+    y += 12;
+
+    // ======================
+    // CARDS RESULTADOS
+    // ======================
+
+    const cardWidth = 40;
+    let xCard = 15;
+
+    Object.entries(totals).forEach(([color,val])=>{
+
+        const porcentaje = Math.round((val/total)*100);
+
+        pdf.setFillColor(...colores[color]);
+        pdf.roundedRect(xCard, y, cardWidth, 25, 4, 4, "F");
+
+        pdf.setTextColor(255);
+        pdf.setFontSize(10);
+        pdf.text(color.toUpperCase(), xCard+20, y+7, {align:"center"});
+
+        pdf.setFontSize(16);
+        pdf.text(String(val), xCard+20, y+15, {align:"center"});
+
+        pdf.setFontSize(9);
+        pdf.text(`${porcentaje}%`, xCard+20, y+21, {align:"center"});
+
+        xCard += cardWidth + 5;
+    });
+
+    y += 35;
+
+    // ======================
+    // BARRAS
+    // ======================
+
+    pdf.setTextColor(0);
+    pdf.setFontSize(12);
+    pdf.text("Distribución", 15, y);
+
+    y += 8;
+
+    Object.entries(totals).forEach(([color,val])=>{
+
+        const porcentaje = Math.round((val/total)*100);
+
+        pdf.setTextColor(0);
+        pdf.setFontSize(10);
+        pdf.text(color.toUpperCase(), 15, y);
+
+        pdf.setFillColor(230,230,230);
+        pdf.roundedRect(50, y-4, 100, 5, 2, 2, "F");
+
+        pdf.setFillColor(...colores[color]);
+        pdf.roundedRect(50, y-4, porcentaje, 5, 2, 2, "F");
+
+        pdf.text(`${porcentaje}%`, 155, y);
+
+        y += 10;
+    });
+
+    // ======================
+    // FOOTER
+    // ======================
+
+    pdf.setDrawColor(200);
+    pdf.line(15, 280, 195, 280);
+
+    pdf.setFontSize(8);
+    pdf.setTextColor(120);
+    pdf.text("Reporte generado automáticamente", 15, 285);
+    pdf.text("Kreios", 170, 285);
+
+    // 🔥 convertir PDF a base64
+const pdfBase64 = pdf.output("datauristring");
+
+// 🔥 enviar al backend (Flask)
+await fetch("/enviar-pdf", {
+    method: "POST",
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+        nombre: userData.nombre,
+        correo: userData.correo,
+        pdf: pdfBase64
+    })
 });
 
-});
+// 🔥 mensaje al usuario
+alert("📩 Tu reporte fue enviado a tu correo");
+}

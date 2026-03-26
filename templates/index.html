@@ -8,110 +8,102 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 
 </head>
 
 <body>
 
-  <div class="brain-bg">
-
-<div class="brain azul"></div>
-<div class="brain amarillo"></div>
-<div class="brain rojo"></div>
-<div class="brain verde"></div>
-
-</div>
+<!-- FONDO -->
+<div class="brain-bg"></div>
 
 <header class="topbar">
-
-<img src="{{ url_for('static', filename='images/logo.png') }}" class="logo"/>
-
-<div>
-<h1>Test de Preferencias Hemisféricas</h1>
-<p class="subtitle">Descubre cómo procesa información tu cerebro</p>
-</div>
-
+  <img src="{{ url_for('static', filename='images/logo.png') }}" class="logo"/>
+  <div>
+    <h1>Test de Preferencias Hemisféricas</h1>
+    <p class="subtitle">Descubre cómo procesa información tu cerebro</p>
+  </div>
 </header>
 
 <main class="container">
 
-<!-- INTRO -->
+<!-- START -->
+<section id="startScreen" class="start-full">
 
-<section id="intro" class="card intro">
+  <div class="start-container">
 
-<h2>🧠 ¿Cómo funciona?</h2>
+    <div class="start-left">
+      <h1>¿Cómo piensa <span>tu mente?</span></h1>
 
-<p>
-Este ejercicio identifica tu estilo predominante de pensamiento y la manera en que analizas situaciones, tomas decisiones y resuelves problemas.
-</p>
+      <p class="desc">
+        Descubre tu estilo dominante de pensamiento y cómo influye en tu forma de trabajar.
+      </p>
 
-<div class="rules">
+      <ul class="steps">
+        <li>Recorrerás 3 mapas de palabras, cada uno con decenas de opciones.</li>
+        <li>En cada mapa elige las 8 palabras con las que más te identifiques.</li>
+        <li>Al final descubrirás tu perfil de pensamiento dominante</li>
+      </ul>
 
-<div class="rule">
-🎯 <strong>Objetivo</strong><br>
-Selecciona las palabras que mejor describen tu forma natural de pensar.
-</div>
+      <input type="text" id="nombre" placeholder="Nombre completo">
+      <input type="email" id="correo" placeholder="correo@empresa.com">
 
-<div class="rule">
-⚡ <strong>Regla</strong><br>
-Debes elegir exactamente <strong>8 palabras</strong> en cada mapa.
-</div>
+      <button id="startBtn" class="btn-start">Comenzar test</button>
+    </div>
 
-<div class="rule">
-⏱ <strong>Tip</strong><br>
-No lo pienses demasiado. Tu primera reacción suele ser la más precisa.
-</div>
+    <div class="start-right">
+      <img src="{{ url_for('static', filename='images/logo.png') }}">
+    </div>
 
-</div>
+  </div>
 
 </section>
 
-<!-- MAPAS -->
+<!-- INTRO -->
+<section id="intro" class="card intro">
+<h2>🧠 ¿Cómo funciona?</h2>
+<p>Selecciona las 8 palabras con las que más te identifiques.</p>
+</section>
 
+<!-- MAPA -->
 <section id="mapSection" class="card">
-
 <div id="mapas"></div>
+<div class="contador-box">
+  <div class="barra-segmentos" id="barraSegmentos"></div>
 
-<p class="contador">
-Seleccionadas: <span id="count">0</span> / 8
-</p>
+  <div class="contador-texto">
+    <span id="count">0</span> / 8 palabras
+  </div>
 
+  <div class="faltantes" id="faltantes">Faltan 8</div>
+</div>
 </section>
 
 <div class="controls">
-
 <button id="prev" class="btn btn-secondary">Anterior</button>
-
 <button id="next" class="btn">Siguiente</button>
-
 </div>
 
-<!-- RESULTADOS -->
+<!-- RESULTADO -->
+<section id="resultado" class="card">
 
-<section id="resultado" class="card" style="display:none;">
+<h2 class="titulo-resultado">🧠 Resultados</h2>
 
-<h2>Resultados de tu Perfil Cognitivo</h2>
+<div id="dashboard"></div>
 
-<canvas id="chart"></canvas>
+<div class="chart-box">
+  <canvas id="chart"></canvas>
+</div>
 
-<div id="interpretacion"></div>
-
-<button id="descargar" class="btn btn-primary">
-Descargar PDF
-</button>
+<button id="descargar" class="btn">Descargar PDF</button>
 
 </section>
 
 </main>
 
-<footer class="footer">
-© 2023 Kreios Consulting
-</footer>
+<footer class="footer">© Kreios</footer>
 
-<div id="progress">
-<div id="progress-bar"></div>
-</div>
+<div id="progress"><div id="progress-bar"></div></div>
 
 <script src="{{ url_for('static', filename='js/maps.js') }}"></script>
 <script src="{{ url_for('static', filename='js/main.js') }}"></script>

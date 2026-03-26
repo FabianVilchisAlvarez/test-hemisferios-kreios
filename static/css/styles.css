@@ -1,87 +1,42 @@
 /* =========================
-BASE
+RESET / BASE
 ========================= */
+
+*{
+  box-sizing:border-box;
+}
 
 body{
-font-family:Arial,sans-serif;
-margin:0;
-background:transparent;
+  margin:0;
+  font-family:'Segoe UI', sans-serif;
+
+  /* 🔥 GRADIENTE GLOBAL MÁS CLARO */
+  background:linear-gradient(135deg,#1a1a2e,#2a2a72,#6a11cb);
+
+  min-height:100vh;
 }
 
-/* =========================
-FONDO CEREBRO 4 COLORES
-========================= */
-
-.brain-bg{
-
-position:fixed;
-top:0;
-left:0;
-
-width:100%;
-height:100%;
-
-display:grid;
-grid-template-columns:1fr 1fr;
-grid-template-rows:1fr 1fr;
-
-z-index:-1;
-opacity:0.35;
-
+.card{
+  background:rgba(255,255,255,0.95);
+  backdrop-filter:blur(6px);
 }
 
-.brain{
-width:100%;
-height:100%;
-}
-
-/* colores hemisferios */
-
-.azul{
-background:#1f4e79;
-}
-
-.amarillo{
-background:#f2b705;
-}
-
-.rojo{
-background:#c0392b;
-}
-
-.verde{
-background:#27ae60;
-}
 
 /* =========================
 HEADER
 ========================= */
 
 .topbar{
-
-display:flex;
-align-items:center;
-gap:20px;
-
-background:rgba(11,79,113,.95);
-backdrop-filter:blur(6px);
-
-color:white;
-
-padding:15px 25px;
-
-box-shadow:0 4px 12px rgba(0,0,0,.2);
-
+  display:none;
+  align-items:center;
+  gap:15px;
+  padding:15px 25px;
+  background:#0b4f71;
+  color:white;
 }
 
 .logo{
-height:50px;
-}
-
-.subtitle{
-margin:0;
-opacity:.9;
-font-size:14px;
+  height:50px;
 }
 
 /* =========================
@@ -89,158 +44,80 @@ CONTENEDOR
 ========================= */
 
 .container{
-
-max-width:900px;
-margin:20px auto;
-padding:10px;
-
+  max-width:1100px;
+  margin:20px auto;
+  padding:10px;
 }
 
 /* =========================
-CARD
+CARDS
 ========================= */
 
 .card{
-
-background:rgba(255,255,255,0.95);
-
-backdrop-filter:blur(6px);
-
-padding:25px;
-
-border-radius:14px;
-
-box-shadow:0 12px 30px rgba(0,0,0,.15);
-
-margin-bottom:20px;
-
+  display:none;
+  background:white;
+  padding:25px;
+  border-radius:14px;
+  box-shadow:0 12px 30px rgba(0,0,0,.1);
+  margin-bottom:20px;
 }
 
 /* =========================
-INTRO
-========================= */
-
-.intro h2{
-margin-top:0;
-}
-
-.rules{
-
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-gap:12px;
-
-margin-top:15px;
-
-}
-
-.rule{
-
-background:#f0f4f8;
-
-padding:12px;
-
-border-radius:8px;
-
-font-size:14px;
-
-}
-
-/* =========================
-PALABRAS
+PALABRAS (GRID BONITO)
 ========================= */
 
 .word-container{
-
-display:grid;
-
-grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
-
-gap:14px;
-
-margin-top:20px;
-
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:14px;
+  margin-top:20px;
 }
 
 .word{
+  background:#fff;
+  border:2px solid #e4e7ec;
+  padding:10px;
+  border-radius:12px;
+  text-align:center;
+  cursor:pointer;
 
-background:white;
-border:2px solid #e4e7ec;
+  /* 🔥 tamaño uniforme */
+  height:70px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 
-padding:10px 14px;
+  /* 🔥 texto adaptable */
+  font-size:13px;
+  line-height:1.2;
+  word-break:break-word;
+  overflow-wrap:break-word;
 
-border-radius:12px;
-
-font-weight:500;
-
-text-align:center;
-cursor:pointer;
-
-display:flex;
-align-items:center;
-justify-content:center;
-
-min-height:56px;
-
-font-size:14px;
-line-height:1.25;
-
-white-space:normal;
-word-break:normal;
-overflow-wrap:break-word;
-
-transition:
-transform .15s,
-background .2s,
-box-shadow .2s,
-border-color .2s;
-
+  transition:all .2s ease;
 }
-
-/* hover */
 
 .word:hover{
-
-transform:translateY(-3px);
-
-box-shadow:0 6px 14px rgba(0,0,0,.12);
-
+  transform:translateY(-3px);
+  box-shadow:0 6px 14px rgba(0,0,0,.12);
+  border-color:#6a11cb;
 }
-
-/* seleccionada */
 
 .word.selected{
-
-background:#0b4f71;
-
-color:white;
-
-border-color:#0b4f71;
-
-transform:scale(1.08);
-
-box-shadow:
-0 8px 18px rgba(0,0,0,.18),
-0 0 12px rgba(11,79,113,.5);
-
-animation:pop .25s ease;
-
+  background:linear-gradient(135deg,#6a11cb,#ff00cc);
+  color:white;
+  border:none;
+  transform:scale(1.05);
+  box-shadow:0 6px 14px rgba(0,0,0,.2);
+  position:relative;
 }
 
-/* =========================
-CONTADOR
-========================= */
-
-.contador{
-
-margin-top:10px;
-
-font-weight:bold;
-
-font-size:15px;
-
-color:#0b4f71;
-
+.word.selected::after{
+  content:"✔";
+  position:absolute;
+  top:6px;
+  right:8px;
+  font-size:14px;
+  font-weight:bold;
 }
 
 /* =========================
@@ -248,55 +125,27 @@ BOTONES
 ========================= */
 
 .controls{
-
-display:flex;
-
-justify-content:space-between;
-
-margin-bottom:20px;
-
+  display:none;
+  justify-content:space-between;
+  margin-bottom:20px;
 }
 
 .btn{
-
-background:#0b4f71;
-
-color:white;
-
-border:none;
-
-padding:11px 20px;
-
-border-radius:10px;
-
-cursor:pointer;
-
-font-size:14px;
-
-transition:all .2s;
-
+  padding:10px 20px;
+  border:none;
+  border-radius:8px;
+  background:#0b4f71;
+  color:white;
+  cursor:pointer;
+  transition:.2s;
 }
 
 .btn:hover{
-
-background:#083a52;
-
-transform:translateY(-2px);
-
-box-shadow:0 4px 10px rgba(0,0,0,.2);
-
+  background:#083a52;
 }
 
 .btn-secondary{
-
-background:#6c757d;
-
-}
-
-.btn-secondary:hover{
-
-background:#545b62;
-
+  background:#6c757d;
 }
 
 /* =========================
@@ -304,59 +153,124 @@ PROGRESS BAR
 ========================= */
 
 #progress{
-
-width:100%;
-
-height:14px;
-
-background:#e4e7ec;
-
-border-radius:10px;
-
-overflow:hidden;
-
-margin-top:10px;
-
+  width:100%;
+  height:10px;
+  background:#ddd;
 }
 
 #progress-bar{
-
-height:100%;
-
-width:0%;
-
-background:linear-gradient(
-90deg,
-#1f4e79,
-#f2b705,
-#c0392b,
-#27ae60
-);
-
-border-radius:10px;
-
-transition:width .4s;
-
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,#6a11cb,#ff00cc);
+  transition:width .3s;
 }
 
 /* =========================
-RESULTADOS
+START FULL (FIX PRINCIPAL)
 ========================= */
 
-#resultado h3{
+.start-full{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100vh;
 
-margin-top:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 
-color:#0b4f71;
+  background:linear-gradient(135deg,#0f0c29,#302b63,#6a11cb);
 
+  z-index:9999;
 }
 
-#interpretacion{
+/* CONTENEDOR CENTRADO PERFECTO */
+.start-container{
+  width:100%;
+  max-width:1200px;
+  padding:0 40px;
 
-font-size:15px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:60px;
 
-line-height:1.6;
+  color:white;
+}
 
+/* IZQUIERDA */
+.start-left{
+  flex:1;
+  max-width:500px;
+}
+
+.start-left h1{
+  font-size:52px;
+  line-height:1.1;
+  margin:0;
+}
+
+.start-left span{
+  background:linear-gradient(90deg,#ff00cc,#ff7a18);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+.desc{
+  margin:20px 0;
+  line-height:1.6;
+  color:#ddd;
+}
+
+.steps{
+  margin:20px 0;
+  padding-left:20px;
+}
+
+.steps li{
+  margin-bottom:10px;
+}
+
+/* INPUTS */
+.start-left input{
+  width:100%;
+  padding:14px;
+  margin-bottom:12px;
+  border:none;
+  border-radius:10px;
+  font-size:14px;
+}
+
+/* BOTÓN */
+.btn-start{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:10px;
+  background:linear-gradient(90deg,#6a11cb,#ff00cc);
+  color:white;
+  font-weight:bold;
+  font-size:15px;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.btn-start:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 20px rgba(0,0,0,.3);
+}
+
+/* DERECHA */
+.start-right{
+  flex:1;
+  display:flex;
+  justify-content:center;
+}
+
+.start-right img{
+  width:100%;
+  max-width:420px;
 }
 
 /* =========================
@@ -364,25 +278,362 @@ FOOTER
 ========================= */
 
 .footer{
-
-text-align:center;
-
-padding:15px;
-
-font-size:13px;
-
-color:#eee;
-
+  display:none;
+  text-align:center;
+  padding:15px;
+  font-size:13px;
+  color:#666;
 }
 
 /* =========================
-ANIMACIONES
+OCULTAR TODO AL INICIO
 ========================= */
 
-@keyframes pop{
-
-0%{transform:scale(1)}
-50%{transform:scale(1.12)}
-100%{transform:scale(1.08)}
-
+#intro,
+#mapSection,
+.controls,
+#resultado,
+.topbar,
+.footer{
+  display:none;
 }
+
+.fade-in{
+  animation:fadeIn .4s ease;
+}
+
+.fade-out{
+  animation:fadeOut .3s ease;
+}
+
+@keyframes fadeIn{
+  from{opacity:0; transform:translateY(10px);}
+  to{opacity:1; transform:translateY(0);}
+}
+
+@keyframes fadeOut{
+  from{opacity:1;}
+  to{opacity:0;}
+}
+
+/* =========================
+DASHBOARD PRO
+========================= */
+
+.dashboard{
+  animation:fadeIn .5s ease;
+}
+
+.cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:15px;
+}
+
+.card-kpi{
+  background:white;
+  padding:15px;
+  border-radius:12px;
+  box-shadow:0 10px 20px rgba(0,0,0,.1);
+  transition:.3s;
+}
+
+.card-kpi:hover{
+  transform:translateY(-5px);
+}
+
+.kpi-title{
+  font-weight:bold;
+}
+
+.kpi-value{
+  font-size:28px;
+  font-weight:bold;
+}
+
+.bar{
+  margin-top:10px;
+  height:8px;
+  background:#eee;
+  border-radius:10px;
+}
+
+.fill{
+  height:100%;
+  border-radius:10px;
+}
+
+/* colores */
+.azul .fill{ background:#1f4e79; }
+.amarillo .fill{ background:#f2b705; }
+.rojo .fill{ background:#c0392b; }
+.verde .fill{ background:#27ae60; }
+
+/* dominante */
+.dominante{
+  border:2px solid #6a11cb;
+  transform:scale(1.05);
+}
+
+.dominante-box{
+  margin-top:20px;
+  padding:15px;
+  background:linear-gradient(90deg,#6a11cb,#ff00cc);
+  color:white;
+  border-radius:10px;
+  text-align:center;
+  font-weight:bold;
+}
+
+/* chart */
+.chart-box{
+  margin-top:30px;
+  padding:20px;
+  background:white;
+  border-radius:12px;
+  box-shadow:0 10px 25px rgba(0,0,0,.1);
+
+  max-width:400px;   /* 🔥 tamaño 50% */
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.titulo-resultado{
+  text-align:center;
+  margin-bottom:20px;
+}
+
+/* =========================
+DASHBOARD RESULTADOS
+========================= */
+
+.dashboard{
+  padding:20px;
+}
+
+/* HEADER */
+.resultado-header{
+  text-align:center;
+  margin-bottom:25px;
+}
+
+.resultado-header h2{
+  margin:0;
+}
+
+.resultado-header p{
+  color:#666;
+  font-size:13px;
+}
+
+/* PERFIL */
+.perfil-dominante{
+  background:linear-gradient(135deg,#6a11cb,#ff00cc);
+  color:white;
+  padding:20px;
+  border-radius:12px;
+  margin-bottom:25px;
+}
+
+/* EMPATE */
+.card-empate{
+  background:#fff;
+  border-left:5px solid #6a11cb;
+  padding:15px;
+  margin-bottom:10px;
+  border-radius:8px;
+}
+
+/* GRID RESULTADOS */
+.grid-resultados{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
+  gap:15px;
+}
+
+.card-resultado{
+  padding:15px;
+  border-radius:12px;
+  color:white;
+  text-align:center;
+}
+
+/* COLORES VIVOS (NO OPACOS) */
+.card-resultado.azul{
+  background:linear-gradient(135deg,#0072ff,#00c6ff);
+}
+
+.card-resultado.rojo{
+  background:linear-gradient(135deg,#ff416c,#ff4b2b);
+}
+
+.card-resultado.verde{
+  background:linear-gradient(135deg,#11998e,#38ef7d);
+}
+
+.card-resultado.amarillo{
+  background:linear-gradient(135deg,#f7971e,#ffd200);
+}
+
+/* TEXTO */
+.valor{
+  font-size:36px;
+  font-weight:bold;
+  margin:5px 0;
+}
+
+.porcentaje{
+  font-size:14px;
+  opacity:.9;
+}
+
+/* =========================
+GRADIENTES POR COLOR (RESULTADO)
+========================= */
+
+.bg-azul{
+  background:linear-gradient(135deg,#0072ff,#00c6ff);
+}
+
+.bg-rojo{
+  background:linear-gradient(135deg,#ff416c,#ff4b2b);
+}
+
+.bg-verde{
+  background:linear-gradient(135deg,#11998e,#38ef7d);
+}
+
+.bg-amarillo{
+  background:linear-gradient(135deg,#f7971e,#ffd200);
+}
+
+.contador-box{
+  background:#f1f3f6;
+  padding:12px 18px;
+  border-radius:20px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  margin-top:15px;
+}
+
+.barra-segmentos{
+  display:flex;
+  gap:6px;
+  flex:1;
+}
+
+.segmento{
+  height:8px;
+  flex:1;
+  border-radius:10px;
+  background:#dcdfe6;
+  transition:.3s;
+}
+
+.segmento.activo{
+  background:linear-gradient(90deg,#6a11cb,#ff00cc);
+}
+
+.contador-texto{
+  font-weight:bold;
+  font-size:14px;
+}
+
+.faltantes{
+  font-size:12px;
+  color:#666;
+}
+
+
+.perfil-dominante,
+.card-resultado {
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+/* =========================
+DESEMPATE PRO
+========================= */
+
+.empate-box{
+  text-align:center;
+  max-width:700px;
+  margin:0 auto;
+}
+
+/* 🔥 título con gradiente tipo portada */
+.empate-titulo{
+  font-size:32px;
+  margin-bottom:10px;
+
+  background:linear-gradient(90deg,#ff00cc,#ff7a18);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+/* descripción */
+.empate-desc{
+  color:#555;
+  font-size:15px;
+  line-height:1.6;
+  margin-bottom:25px;
+}
+
+/* contenedor frases */
+.empate-frases{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
+/* cards sin color por perfil */
+.card-empate{
+  background:white;
+  border:none;
+  padding:18px;
+  border-radius:12px;
+  cursor:pointer;
+
+  box-shadow:0 10px 25px rgba(0,0,0,.08);
+  transition:.25s;
+}
+
+/* hover elegante */
+.card-empate:hover{
+  transform:translateY(-4px);
+  box-shadow:0 12px 30px rgba(0,0,0,.15);
+}
+
+/* texto limpio */
+.card-empate p{
+  margin:0;
+  font-size:15px;
+  color:#333;
+}
+
+/* MODO PDF LIMPIO */
+.pdf-mode *{
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+}
+
+.pdf-mode .card,
+.pdf-mode .chart-box,
+.pdf-mode .perfil-dominante,
+.pdf-mode .card-resultado{
+  background: #ffffff !important;
+  color: #000 !important;
+}
+
+/* 🔥 mantener colores SOLO donde importan */
+.pdf-mode .bg-verde{ background:#27ae60 !important; color:white !important; }
+.pdf-mode .bg-azul{ background:#0072ff !important; color:white !important; }
+.pdf-mode .bg-rojo{ background:#e74c3c !important; color:white !important; }
+.pdf-mode .bg-amarillo{ background:#f1c40f !important; color:black !important; }
+
+.pdf-mode .card-resultado.azul{ background:#0072ff !important; }
+.pdf-mode .card-resultado.rojo{ background:#e74c3c !important; }
+.pdf-mode .card-resultado.verde{ background:#27ae60 !important; }
+.pdf-mode .card-resultado.amarillo{ background:#f1c40f !important; }
