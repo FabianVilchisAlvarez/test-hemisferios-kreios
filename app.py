@@ -1,8 +1,7 @@
 from flask import Flask, render_template, request, jsonify
-import smtplib
-from email.message import EmailMessage
 import base64
 import os
+import requests
 
 app = Flask(__name__)
 
@@ -15,18 +14,12 @@ def index():
 
 
 # =========================
-# ENVIAR PDF
+# ENVIAR PDF (BREVO)
 # =========================
 @app.route("/enviar-pdf", methods=["POST"])
 def enviar_pdf():
-
     try:
-        # 🔥 FIX RENDER (JSON seguro)
-        data = request.get_json(silent=True)
-
-        if not data:
-            print("❌ No llegó JSON")
-            return jsonify({"error": "No data received"}), 400
+        data = request.json
 
         nombre = data.get("nombre")
         correo_destino = data.get("correo")
@@ -35,53 +28,64 @@ def enviar_pdf():
         print("📩 Datos recibidos:", nombre, correo_destino)
 
         if not nombre or not correo_destino or not pdf_base64:
-            print("❌ Datos incompletos")
             return jsonify({"error": "Datos incompletos"}), 400
 
         # 🔥 limpiar base64
-        if "," in pdf_base64:
-            pdf_base64 = pdf_base64.split(",")[1]
-
+        pdf_base64 = pdf_base64.split(",")[1]
         pdf_bytes = base64.b64decode(pdf_base64)
 
-        # 🔐 VARIABLES DE ENTORNO
+        # 🔐 ENV
+        BREVO_API_KEY = os.environ.get("BREVO_API_KEY")
         EMAIL_USER = os.environ.get("EMAIL_USER")
-        EMAIL_PASS = os.environ.get("EMAIL_PASS")
 
-        if not EMAIL_USER or not EMAIL_PASS:
-            print("❌ Faltan variables de entorno")
+        if not BREVO_API_KEY or not EMAIL_USER:
             return jsonify({"error": "Faltan variables de entorno"}), 500
 
-        # 📧 CREAR EMAIL
-        msg = EmailMessage()
-        msg["Subject"] = "Mapa de Preferencias Hemisféricas - Kreios"
-        msg["From"] = EMAIL_USER
-        msg["To"] = correo_destino
+        print("📤 Enviando correo con Brevo...")
 
-        # 🔥 mejora entregabilidad
-        msg["Reply-To"] = EMAIL_USER
+        url = "https://api.brevo.com/v3/smtp/email"
 
-        msg.set_content(f"""
-Hola {nombre},
+        headers = {
+            "accept": "application/json",
+            "api-key": BREVO_API_KEY,
+            "content-type": "application/json"
+        }
 
-Te compartimos tu resultado del Test de Preferencias Hemisféricas.
+        payload = {
+            "sender": {
+                "name": "Kreios",
+                "email": EMAIL_USER
+            },
+            "to": [
+                {
+                    "email": correo_destino,
+                    "name": nombre
+                }
+            ],
+            "subject": "Mapa de Preferencias Hemisféricas - Kreios",
+            "htmlContent": f"""
+            <html>
+                <body>
+                    <p>Hola {nombre},</p>
+                    <p>Adjunto encontrarás tu resultado del test.</p>
+                    <p>Gracias por confiar en <b>Kreios</b>.</p>
+                </body>
+            </html>
+            """,
+            "attachment": [
+                {
+                    "content": base64.b64encode(pdf_bytes).decode("utf-8"),
+                    "name": "perfil_cognitivo.pdf"
+                }
+            ]
+        }
 
-Gracias por confiar en Kreios.
-""")
+        response = requests.post(url, json=payload, headers=headers)
 
-        msg.add_attachment(
-            pdf_bytes,
-            maintype="application",
-            subtype="pdf",
-            filename="perfil_cognitivo.pdf"
-        )
+        print("📨 Respuesta Brevo:", response.text)
 
-        # 🔥 SMTP GMAIL
-        print("📤 Enviando correo...")
-        with smtplib.SMTP("smtp.gmail.com", 587, timeout=30) as server:
-            server.starttls()
-            server.login(EMAIL_USER, EMAIL_PASS)
-            server.send_message(msg)
+        if response.status_code not in [200, 201]:
+            return jsonify({"error": response.text}), 500
 
         print("✅ Correo enviado correctamente")
 
