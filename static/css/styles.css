@@ -103,7 +103,7 @@ PALABRAS (GRID BONITO)
 }
 
 .word.selected{
-  background:linear-gradient(135deg,#6a11cb,#ff00cc);
+  background:linear-gradient(135deg,#0b5cff,#6a00ff);
   color:white;
   border:none;
   transform:scale(1.05);
@@ -165,6 +165,10 @@ PROGRESS BAR
   transition:width .3s;
 }
 
+.barra-completa .segmento.activo{
+  box-shadow:0 0 8px rgba(106,17,203,.8);
+}
+
 /* =========================
 START FULL (FIX PRINCIPAL)
 ========================= */
@@ -188,21 +192,24 @@ START FULL (FIX PRINCIPAL)
 /* CONTENEDOR CENTRADO PERFECTO */
 .start-container{
   width:100%;
-  max-width:1200px;
-  padding:0 40px;
+  max-width:800px;
+  padding:0 20px;
 
   display:flex;
+  flex-direction:column;
   align-items:center;
-  justify-content:space-between;
-  gap:60px;
+  justify-content:center;
+  text-align:center;
+
+  gap:20px;
 
   color:white;
 }
 
 /* IZQUIERDA */
 .start-left{
-  flex:1;
-  max-width:500px;
+  width:100%;
+  max-width:700px;
 }
 
 .start-left h1{
@@ -234,26 +241,14 @@ START FULL (FIX PRINCIPAL)
 
 /* INPUTS */
 .start-left input{
-  width:100%;
-  padding:14px;
-  margin-bottom:12px;
-  border:none;
-  border-radius:10px;
-  font-size:14px;
+  font-size:16px;
+  padding:16px;
 }
 
 /* BOTÓN */
 .btn-start{
-  width:100%;
-  padding:14px;
-  border:none;
-  border-radius:10px;
-  background:linear-gradient(90deg,#6a11cb,#ff00cc);
-  color:white;
-  font-weight:bold;
-  font-size:15px;
-  cursor:pointer;
-  transition:.2s;
+  font-size:18px;
+  padding:16px;
 }
 
 .btn-start:hover{
@@ -277,12 +272,12 @@ START FULL (FIX PRINCIPAL)
 FOOTER
 ========================= */
 
-.footer{
-  display:none;
-  text-align:center;
-  padding:15px;
-  font-size:13px;
-  color:#666;
+.footer {
+    color: #ffffff;
+    font-size: 28px;
+    font-weight: 500;
+    text-align: center;
+    margin-top: 20px;
 }
 
 /* =========================
@@ -364,10 +359,10 @@ DASHBOARD PRO
 }
 
 /* colores */
-.azul .fill{ background:#1f4e79; }
-.amarillo .fill{ background:#f2b705; }
-.rojo .fill{ background:#c0392b; }
-.verde .fill{ background:#27ae60; }
+.azul .fill{ background:var(--color-azul); }
+.amarillo .fill{ background:var(--color-amarillo); }
+.rojo .fill{ background:var(--color-rojo); }
+.verde .fill{ background:var(--color-verde); }
 
 /* dominante */
 .dominante{
@@ -427,12 +422,24 @@ DASHBOARD RESULTADOS
 }
 
 /* PERFIL */
-.perfil-dominante{
-  background:linear-gradient(135deg,#6a11cb,#ff00cc);
+.perfil-dominante.bg-azul{
+  background:linear-gradient(135deg,#2C6AE8,#112C78);
   color:white;
-  padding:20px;
-  border-radius:12px;
-  margin-bottom:25px;
+}
+
+.perfil-dominante.bg-verde{
+  background:linear-gradient(135deg,#2DB656,#07381B);
+  color:white;
+}
+
+.perfil-dominante.bg-rojo{
+  background:linear-gradient(135deg,#E93556,#580316);
+  color:white;
+}
+
+.perfil-dominante.bg-amarillo{
+  background:linear-gradient(135deg,#F7D736,#83731C);
+  color:white;
 }
 
 /* EMPATE */
@@ -460,19 +467,19 @@ DASHBOARD RESULTADOS
 
 /* COLORES VIVOS (NO OPACOS) */
 .card-resultado.azul{
-  background:linear-gradient(135deg,#0072ff,#00c6ff);
-}
-
-.card-resultado.rojo{
-  background:linear-gradient(135deg,#ff416c,#ff4b2b);
+  background:linear-gradient(135deg,#2C6AE8,#112C78);
 }
 
 .card-resultado.verde{
-  background:linear-gradient(135deg,#11998e,#38ef7d);
+  background:linear-gradient(135deg,#2DB656,#07381B);
+}
+
+.card-resultado.rojo{
+  background:linear-gradient(135deg,#E93556,#580316);
 }
 
 .card-resultado.amarillo{
-  background:linear-gradient(135deg,#f7971e,#ffd200);
+  background:linear-gradient(135deg,#F7D736,#83731C);
 }
 
 /* TEXTO */
@@ -526,14 +533,14 @@ GRADIENTES POR COLOR (RESULTADO)
 
 .segmento{
   height:8px;
-  flex:1;
+  width:18px;
   border-radius:10px;
   background:#dcdfe6;
   transition:.3s;
 }
 
 .segmento.activo{
-  background:linear-gradient(90deg,#6a11cb,#ff00cc);
+  background:linear-gradient(90deg,#0b5cff,#6a00ff);
 }
 
 .contador-texto{
@@ -554,63 +561,63 @@ GRADIENTES POR COLOR (RESULTADO)
 }
 
 /* =========================
-DESEMPATE PRO
+DESEMPATE PRO (LIMPIO)
 ========================= */
 
-.empate-box{
-  text-align:center;
-  max-width:700px;
-  margin:0 auto;
+.empate-box {
+    background: #ffffff;
+    padding: 35px;
+    border-radius: 18px;
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto;
 }
 
-/* 🔥 título con gradiente tipo portada */
+/* 🔥 título con gradiente tipo marca */
 .empate-titulo{
-  font-size:32px;
+  font-size:34px;
+  font-weight:800;
   margin-bottom:10px;
 
-  background:linear-gradient(90deg,#ff00cc,#ff7a18);
+  background:linear-gradient(90deg,#0b5cff,#6a00ff);
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
 }
 
 /* descripción */
 .empate-desc{
-  color:#555;
+  color:#666;
   font-size:15px;
   line-height:1.6;
   margin-bottom:25px;
 }
 
 /* contenedor frases */
-.empate-frases{
-  display:flex;
-  flex-direction:column;
-  gap:12px;
+.empate-frases {
+    display: grid;
+    gap: 15px;
+    margin-top: 25px;
 }
 
-/* cards sin color por perfil */
-.card-empate{
-  background:white;
-  border:none;
-  padding:18px;
-  border-radius:12px;
-  cursor:pointer;
+/* 🔥 cards modernas */
+.card-empate {
+    background: #f8f9ff;
+    border: 1px solid #e0e6ff;
+    border-radius: 14px;
+    padding: 18px;
+    cursor: pointer;
+    transition: all 0.25s ease;
 
-  box-shadow:0 10px 25px rgba(0,0,0,.08);
-  transition:.25s;
+    font-size:15px;
+    color:#333;
 }
 
-/* hover elegante */
-.card-empate:hover{
-  transform:translateY(-4px);
-  box-shadow:0 12px 30px rgba(0,0,0,.15);
-}
-
-/* texto limpio */
-.card-empate p{
-  margin:0;
-  font-size:15px;
-  color:#333;
+/* 🔥 hover PRO */
+.card-empate:hover {
+    transform: translateY(-3px);
+    background: linear-gradient(90deg,#0b5cff,#6a00ff);
+    color: white;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
 }
 
 /* MODO PDF LIMPIO */
@@ -637,3 +644,188 @@ DESEMPATE PRO
 .pdf-mode .card-resultado.rojo{ background:#e74c3c !important; }
 .pdf-mode .card-resultado.verde{ background:#27ae60 !important; }
 .pdf-mode .card-resultado.amarillo{ background:#f1c40f !important; }
+
+/* =========================
+TIPOGRAFÍA GLOBAL
+========================= */
+body{
+  font-family: 'Nunito', sans-serif;
+}
+
+/* =========================
+LOGO SUPERIOR
+========================= */
+.logo-top{
+  position:fixed;
+  top:20px;
+  right:25px;
+  width:50px;
+}
+
+/* =========================
+TÍTULO PRO
+========================= */
+.titulo-gradient{
+  font-size:64px;
+  font-weight:800;
+  line-height:1.1;
+  margin-bottom:10px;
+
+  background:linear-gradient(135deg,#0b5cff,#6a00ff,#d100ff);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+/* =========================
+DESCRIPCIÓN
+========================= */
+.descripcion{
+  font-size:24px;
+  color:#ddd;
+  margin-bottom:20px;
+}
+
+/* =========================
+LISTA
+========================= */
+.lista{
+  margin-bottom:25px;
+}
+
+.lista li{
+  margin-bottom:32px;
+  color:#ccc;
+}
+
+/* =========================
+BOTÓN START (MEJORADO)
+========================= */
+.btn-start{
+  background:linear-gradient(135deg,#0b5cff,#6a00ff);
+  font-size:16px;
+  font-weight:600;
+}
+
+.btn-start:hover{
+  transform:translateY(-3px) scale(1.02);
+  box-shadow:0 10px 25px rgba(0,0,0,.4);
+}
+
+/* =========================
+HEADER MAPA
+========================= */
+
+.map-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:15px;
+}
+
+#map-title{
+  font-size:18px;
+  font-weight:700;
+  color:#333;
+}
+
+/* contador arriba */
+.contador-inline{
+  background:linear-gradient(135deg,#0b5cff,#6a00ff);
+  color:white;
+  padding:6px 14px;
+  border-radius:20px;
+  font-size:13px;
+  font-weight:600;
+}
+
+/* =========================
+HEADER PROGRESO ARRIBA
+========================= */
+
+.map-progress{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+/* barra mini */
+.mini-bar{
+  width:120px;
+  height:6px;
+  background:#e5e7eb;
+  border-radius:10px;
+  overflow:hidden;
+}
+
+#mini-bar-fill{
+  height:100%;
+  width:0%;
+  border-radius:10px;
+
+  /* 🔥 MÁS AZUL COMO TU MARCA */
+  background:linear-gradient(90deg,#0b5cff,#6a00ff);
+  transition:.3s;
+}
+
+@keyframes pop{
+  0%{ transform:scale(0.9); }
+  60%{ transform:scale(1.12); }
+  100%{ transform:scale(1.08); }
+}
+
+.word.selected{
+  animation:pop .25s ease;
+}
+
+.flash{
+  animation:flashBar .4s ease;
+}
+
+@keyframes flashBar{
+  0%{ transform:scale(1); }
+  50%{ transform:scale(1.05); }
+  100%{ transform:scale(1); }
+}
+
+/* 🔥 FIX SOLO SAFARI / iPHONE */
+@supports (-webkit-touch-callout: none) {
+    
+    .word {
+        white-space: normal;
+        word-break: break-word;
+        overflow-wrap: break-word;
+
+        display: inline-block;
+        max-width: 140px;
+    }
+
+}
+
+.controls button {
+    background: #ffffff;
+    color: #0b5cff; /* 🔥 azul principal */
+    border: none;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: all 0.2s ease;
+}
+
+.controls button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}
+
+.controls button:active {
+    transform: scale(0.97);
+}
+
+:root{
+  --grad-azul: linear-gradient(135deg, #2C6AE8, #112C78);
+  --grad-verde: linear-gradient(135deg, #2DB656, #07381B);
+  --grad-rojo: linear-gradient(135deg, #E93556, #580316);
+  --grad-amarillo: linear-gradient(135deg, #F7D736, #83731C);
+}

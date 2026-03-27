@@ -17,6 +17,7 @@
 <!-- FONDO -->
 <div class="brain-bg"></div>
 
+<!--
 <header class="topbar">
   <img src="{{ url_for('static', filename='images/logo.png') }}" class="logo"/>
   <div>
@@ -24,6 +25,7 @@
     <p class="subtitle">Descubre cómo procesa información tu cerebro</p>
   </div>
 </header>
+-->
 
 <main class="container">
 
@@ -33,49 +35,65 @@
   <div class="start-container">
 
     <div class="start-left">
-      <h1>¿Cómo piensa <span>tu mente?</span></h1>
 
-      <p class="desc">
-        Descubre tu estilo dominante de pensamiento y cómo influye en tu forma de trabajar.
-      </p>
+  <!-- LOGO ARRIBA DERECHA -->
+  <img src="{{ url_for('static', filename='images/logo.png') }}" class="logo-top">
 
-      <ul class="steps">
-        <li>Recorrerás 3 mapas de palabras, cada uno con decenas de opciones.</li>
-        <li>En cada mapa elige las 8 palabras con las que más te identifiques.</li>
-        <li>Al final descubrirás tu perfil de pensamiento dominante</li>
-      </ul>
+  <h1 class="titulo-gradient">
+    ¿Cómo piensa tu mente?
+  </h1>
 
-      <input type="text" id="nombre" placeholder="Nombre completo">
-      <input type="email" id="correo" placeholder="correo@empresa.com">
+  <p class="descripcion">
+    Descubre tu estilo dominante de pensamiento y cómo influye en tu forma de trabajar.
+  </p>
 
-      <button id="startBtn" class="btn-start">Comenzar test</button>
-    </div>
+  <ul class="lista">
+    <li>Recorrerás 3 mapas de palabras, cada uno con decenas de opciones.</li>
+    <li>En cada mapa elige las 8 palabras con las que más te identifiques.</li>
+    <li>Al final descubrirás tu perfil de pensamiento dominante.</li>
+  </ul>
 
-    <div class="start-right">
-      <img src="{{ url_for('static', filename='images/logo.png') }}">
-    </div>
+  <input type="text" id="nombre" placeholder="Nombre completo">
+  <input type="email" id="correo" placeholder="correo@empresa.com">
 
-  </div>
+  <button id="startBtn" class="btn-start">
+    Comenzar test
+  </button>
+
+</div>
 
 </section>
 
 <!-- INTRO -->
 <section id="intro" class="card intro">
-<h2>🧠 ¿Cómo funciona?</h2>
+<h2>¿Cómo funciona?</h2>
 <p>Selecciona las 8 palabras con las que más te identifiques.</p>
 </section>
 
 <!-- MAPA -->
 <section id="mapSection" class="card">
-<div id="mapas"></div>
-<div class="contador-box">
-  <div class="barra-segmentos" id="barraSegmentos"></div>
 
-  <div class="contador-texto">
-    <span id="count">0</span> / 8 palabras
+<!-- HEADER MAPA -->
+<div class="map-header">
+
+  <div id="map-title">Mapa 1</div>
+
+  <div class="map-progress">
+
+    <div class="barra-segmentos" id="barraSegmentos"></div>
+
+    <div class="contador-inline">
+      <span id="count">0</span> / 8
+    </div>
+
+    <div class="faltantes" id="faltantes">Faltan 8</div>
+
   </div>
 
-  <div class="faltantes" id="faltantes">Faltan 8</div>
+</div>
+
+<div id="mapas"></div>
+
 </div>
 </section>
 
@@ -86,8 +104,6 @@
 
 <!-- RESULTADO -->
 <section id="resultado" class="card">
-
-<h2 class="titulo-resultado">🧠 Resultados</h2>
 
 <div id="dashboard"></div>
 
@@ -103,10 +119,11 @@
 
 <footer class="footer">© Kreios</footer>
 
-<div id="progress"><div id="progress-bar"></div></div>
 
 <script src="{{ url_for('static', filename='js/maps.js') }}"></script>
 <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;800&display=swap" rel="stylesheet">
 
 </body>
 </html>

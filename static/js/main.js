@@ -7,6 +7,7 @@ const selections = {};
 let chartInstance = null;
 let esperandoDesempate = false;
 let coloresEmpatados = [];
+let colorFinal = null;
 
 let userData = {
     nombre: "",
@@ -102,7 +103,7 @@ function iniciarTest(){
 
     document.getElementById("startScreen").style.display = "none";
 
-    document.querySelector(".topbar").style.display = "flex";
+    // document.querySelector(".topbar").style.display = "flex";
     document.getElementById("intro").style.display = "block";
     document.getElementById("mapSection").style.display = "block";
     document.querySelector(".controls").style.display = "flex";
@@ -120,11 +121,10 @@ function renderMap(){
     const cont = document.getElementById("mapas");
     cont.innerHTML = "";
 
-    const title = document.createElement("h2");
-    title.textContent = `Mapa ${currentMap}`;
-    cont.appendChild(title);
+    // 🔥 ACTUALIZAR TÍTULO ARRIBA
+    document.getElementById("map-title").innerText = `Mapa ${currentMap}`;
 
-    const wordColorMap = buildWordColorMap(MAPS[currentMap]);
+        const wordColorMap = buildWordColorMap(MAPS[currentMap]);
     const words = Object.keys(wordColorMap);
 
     shuffle(words);
@@ -176,8 +176,17 @@ function toggleWord(el,word){
 
         el.classList.add("selected");
         sel.push(word);
+
+        // 🔥 efecto cuando completas 8
+        if(sel.length === 8){
+            const barra = document.getElementById("barraSegmentos");
+            if(barra){
+                barra.classList.add("flash");
+            }
+        }
     }
 
+    // 🔥 esto SIEMPRE va fuera del else
     updateProgress();
 }
 
@@ -250,6 +259,17 @@ function mostrarDesempate(){
     document.querySelector(".controls").style.display = "none";
     document.getElementById("resultado").style.display = "block";
 
+    // 🔥 OCULTAR ELEMENTOS QUE ENSUCIAN (EL CUADRO BLANCO)
+    const chartBox = document.querySelector(".chart-box");
+    if(chartBox){
+        chartBox.style.display = "none";
+    }
+
+    const btnDescargar = document.getElementById("descargar");
+    if(btnDescargar){
+        btnDescargar.style.display = "none";
+    }
+
     let html = `
         <div class="empate-box">
 
@@ -258,9 +278,8 @@ function mostrarDesempate(){
             </h2>
 
             <p class="empate-desc">
-                Tus selecciones resultaron muy similares entre varios perfiles.
-                Lee cada frase con calma y selecciona la que mejor te describa
-                en tu día a día, no como quisieras ser.
+                Tus resultados quedaron muy cercanos entre varios perfiles.
+                Elige la frase que mejor te describe en tu día a día.
             </p>
 
             <div class="empate-frases">
@@ -268,9 +287,8 @@ function mostrarDesempate(){
 
     coloresEmpatados.forEach(color=>{
         html += `
-            <div class="card-empate"
-                onclick="resolverEmpate('${color}')">
-                <p>${FRASES_EMPATE[color]}</p>
+            <div class="card-empate" data-color="${color}">
+                ${FRASES_EMPATE[color]}
             </div>
         `;
     });
@@ -280,13 +298,25 @@ function mostrarDesempate(){
         </div>
     `;
 
-    document.getElementById("dashboard").innerHTML = html;
+    const dash = document.getElementById("dashboard");
+    dash.innerHTML = html;
+
+    // 🔥 EVENTOS
+    document.querySelectorAll(".card-empate").forEach(card => {
+        card.addEventListener("click", () => {
+            const color = card.getAttribute("data-color");
+            resolverEmpate(color);
+        });
+    });
 }
+
 /* =======================
 RESOLVER EMPATE
 ======================= */
 
 function resolverEmpate(colorElegido){
+
+    if(!esperandoDesempate) return;
 
     esperandoDesempate = false;
 
@@ -299,10 +329,21 @@ function resolverEmpate(colorElegido){
         });
     });
 
+    // 🔥 GUARDAMOS EL COLOR FINAL (CLAVE)
+    colorFinal = colorElegido;
+
     mostrarResultadoFinal(colorElegido, totals);
 }
 
-function mostrarResultadoFinal(dominante, totals){
+    function mostrarResultadoFinal(dominante, totals){
+
+    const resultado = document.getElementById("resultado");
+
+    // LIMPIAR TODO EL CONTENEDOR COMPLETO
+    resultado.innerHTML = `
+    <div id="dashboard"></div>
+    <button id="descargar" class="btn">Descargar PDF</button>
+    `;
 
     document.getElementById("mapSection").style.display = "none";
     document.querySelector(".controls").style.display = "none";
@@ -312,112 +353,132 @@ function mostrarResultadoFinal(dominante, totals){
     const totalPalabras = Object.values(totals).reduce((a,b)=>a+b,0);
     const palabrasTop = obtenerPalabrasDominantes(dominante);
 
-    // 🔥 separar titulo y subtitulo correctamente
     const partesTitulo = INTERPRETACIONES[dominante].titulo.split("—");
-    const tituloColor = partesTitulo[0].trim(); // Amarillo
+    const tituloColor = partesTitulo[0].trim();
     const subtitulo = partesTitulo[1]?.trim() || "";
 
-    let html = `
+    const total = Object.values(totals).reduce((a,b)=>a+b,0);
+
+let html = `
 <div class="dashboard">
 
-    <!-- HEADER PRO -->
-    <div style="
-        text-align:center;
-        margin-bottom:25px;
-    ">
-        <h2 style="
-            margin-bottom:5px;
-            font-size:26px;
-        ">
-            🧠 Perfil Cognitivo
-        </h2>
+    <!-- HEADER -->
+    <div style="text-align:center; margin-bottom:25px;">
+        <h2 style="font-size:28px;">Resultados</h2>
+        <div style="font-size:14px; color:#666;">Tu perfil cognitivo</div>
 
-        <div style="
-            font-weight:600;
-            font-size:16px;
-        ">
+        <div style="margin-top:10px; font-weight:600;">
             ${userData.nombre}
         </div>
 
-        <div style="
-            font-size:13px;
-            color:#777;
-        ">
+        <div style="font-size:13px; color:#777;">
             ${userData.correo}
         </div>
-
-        <p style="
-            color:#555;
-            margin-top:10px;
-            max-width:600px;
-            margin-left:auto;
-            margin-right:auto;
-            font-size:14px;
-        ">
-            Interpretación de tu estilo dominante de pensamiento, toma de decisiones y comportamiento.
-        </p>
     </div>
 
-    <!-- PERFIL DOMINANTE -->
-    <div class="perfil-dominante bg-${dominante}">
+    <!-- CAJA PRINCIPAL -->
+    <div class="perfil-dominante bg-${dominante}" style="padding:25px; border-radius:16px;">
 
         <div style="text-align:center; margin-bottom:10px;">
-            
-            <div style="
-                font-size:30px;
-                font-weight:bold;
-                text-transform:uppercase;
-            ">
+            <div style="font-size:26px; font-weight:bold;">
                 ${tituloColor}
             </div>
 
-            <div style="
-                font-size:15px;
-                opacity:0.9;
-                margin-top:3px;
-            ">
+            <div style="font-size:14px; opacity:0.9;">
                 ${subtitulo}
             </div>
-
         </div>
 
-        <p>${INTERPRETACIONES[dominante].texto}</p>
-
-        <div style="margin-top:15px;">
-            <strong>Palabras clave:</strong>
-            <div style="display:flex; flex-wrap:wrap; gap:8px;">
-                ${palabrasTop.map(p=>`<span style="
-                    background:#ffffff33;
-                    padding:6px 10px;
-                    border-radius:8px;
-                    font-size:12px;
-                ">${p}</span>`).join("")}
-            </div>
-        </div>
-
+        <p style="margin-top:10px;">
+            ${INTERPRETACIONES[dominante].texto}
+        </p>
     </div>
 
-    <!-- RESULTADOS -->
-    <div class="grid-resultados">
-`;
-
-    Object.entries(totals).forEach(([color,val])=>{
-        const porcentaje = Math.round((val/totalPalabras)*100);
-
-        html += `
-        <div class="card-resultado ${color}">
-            <h4>${color.toUpperCase()}</h4>
-            <p class="valor">${val}</p>
-            <p class="porcentaje">${porcentaje}%</p>
+    <!-- PALABRAS -->
+    <div style="margin-top:25px;">
+        <div style="font-weight:bold; margin-bottom:10px;">
+            Palabras clave:
         </div>
-        `;
-    });
 
-    html += `</div></div>`;
+        <div style="display:flex; flex-wrap:wrap; gap:8px;">
+            ${palabrasTop.map(p => `
+                <span style="
+                    background:#eee;
+                    padding:6px 10px;
+                    border-radius:10px;
+                    font-size:13px;
+                ">
+                    ${p}
+                </span>
+            `).join("")}
+        </div>
+    </div>
+
+    <!-- CARDS -->
+    <div style="
+        display:grid;
+        grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+        gap:12px;
+        margin-top:30px;
+    ">
+        ${Object.entries(totals).map(([color,val])=>{
+            const porcentaje = Math.round((val/total)*100);
+
+            return `
+                <div class="card-resultado ${color}">
+                    <div style="font-size:12px;">${color.toUpperCase()}</div>
+                    <div class="valor">${val}</div>
+                    <div class="porcentaje">${porcentaje}%</div>
+                </div>
+            `;
+        }).join("")}
+    </div>
+
+    <!-- BARRAS -->
+    <div style="margin-top:30px;">
+        <div style="font-weight:bold; margin-bottom:10px;">
+            Distribución
+        </div>
+
+        ${Object.entries(totals).map(([color,val])=>{
+            const porcentaje = Math.round((val/total)*100);
+
+            return `
+                <div style="margin-bottom:10px;">
+                    <div style="font-size:12px; margin-bottom:3px;">
+                        ${color.toUpperCase()}
+                    </div>
+
+                    <div style="
+                        background:#eee;
+                        height:6px;
+                        border-radius:10px;
+                        overflow:hidden;
+                    ">
+                        <div style="
+                            width:${porcentaje}%;
+                            height:100%;
+                            background:var(--color-${color}, #6a11cb);
+                        "></div>
+                    </div>
+
+                    <div style="font-size:11px;">
+                        ${porcentaje}%
+                    </div>
+                </div>
+            `;
+        }).join("")}
+    </div>
+
+</div>
+`;
 
     document.getElementById("dashboard").innerHTML = html;
 
-    renderChart(totals);
+
+    // REACTIVAR BOTÓN
+    document.getElementById("descargar")
+        .addEventListener("click", descargarPDF);
 }
 
 /* =======================
@@ -426,12 +487,21 @@ CHART (50% MÁS CHICA)
 
 function renderChart(totals){
 
-    const ctx = document.getElementById("chart");
+    const canvas = document.getElementById("chart");
 
-    ctx.style.maxWidth = "400px";
-    ctx.style.margin = "0 auto";
+    // 🔥 SI NO EXISTE, SALIMOS (evita errores silenciosos)
+    if(!canvas) return;
 
-    if(chartInstance) chartInstance.destroy();
+    // 🔥 RESETEAR canvas completamente
+    const newCanvas = canvas.cloneNode(true);
+    canvas.parentNode.replaceChild(newCanvas, canvas);
+
+    const ctx = newCanvas.getContext("2d");
+
+    if(chartInstance){
+        chartInstance.destroy();
+        chartInstance = null;
+    }
 
     chartInstance = new Chart(ctx,{
         type:"radar",
@@ -482,6 +552,25 @@ function updateProgress(){
             seg.classList.remove("activo");
         }
     });
+
+        // 🔥 MINI BARRA ARRIBA
+    const porcentaje = (count / 8) * 100;
+
+    const barra = document.getElementById("mini-bar-fill");
+    if(barra){
+        barra.style.width = porcentaje + "%";
+    }
+
+    // 🔥 AQUÍ VA (AL FINAL)
+    const barraSegmentos = document.getElementById("barraSegmentos");
+
+    if(barraSegmentos){
+        if(count === 8){
+            barraSegmentos.classList.add("barra-completa");
+        }else{
+            barraSegmentos.classList.remove("barra-completa");
+        }
+    }
 }
 
 /* =======================
@@ -571,7 +660,7 @@ async function descargarPDF(){
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF("p", "mm", "a4");
 
-    const dominante = obtenerDominante();
+    const dominante = colorFinal || obtenerDominante();
     const totals = calcularTotalesPDF();
     const palabras = obtenerPalabrasDominantes(dominante);
 
@@ -583,10 +672,10 @@ async function descargarPDF(){
     const subtitulo = partesTitulo[1]?.trim() || "";
 
     const colores = {
-        azul: [0,114,255],
-        amarillo: [247,183,49],
-        rojo: [255,65,108],
-        verde: [17,153,142]
+    azul: [44,106,232],      // #2C6AE8
+    verde: [45,182,86],      // #2DB656
+    rojo: [233,53,86],       // #E93556
+    amarillo: [247,215,54]   // #F7D736
     };
 
     const colorRGB = colores[dominante];
