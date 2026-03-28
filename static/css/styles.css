@@ -81,17 +81,20 @@ PALABRAS (GRID BONITO)
   text-align:center;
   cursor:pointer;
 
-  /* 🔥 tamaño uniforme */
-  height:70px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  min-height:70px;
 
-  /* 🔥 texto adaptable */
+  display:-webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+
+  overflow:hidden;
+  text-overflow: ellipsis;
+
   font-size:13px;
   line-height:1.2;
-  word-break:break-word;
-  overflow-wrap:break-word;
+
+  word-break: break-word;
+  overflow-wrap: break-word;
 
   transition:all .2s ease;
 }

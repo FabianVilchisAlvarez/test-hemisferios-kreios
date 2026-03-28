@@ -380,17 +380,17 @@ let html = `
     <div class="perfil-dominante bg-${dominante}" style="padding:25px; border-radius:16px;">
 
         <div style="text-align:center; margin-bottom:10px;">
-            <div style="font-size:26px; font-weight:bold;">
+            <div style="font-size:68px; font-weight:bold;">
                 ${tituloColor}
             </div>
 
-            <div style="font-size:14px; opacity:0.9;">
+            <div style="font-size:48px; opacity:0.9;">
                 ${subtitulo}
             </div>
         </div>
 
-        <p style="margin-top:10px;">
-            ${INTERPRETACIONES[dominante].texto}
+        <p style="margin-top:18px; font-size:29px; line-height:1.6;">
+        ${INTERPRETACIONES[dominante].texto}
         </p>
     </div>
 
