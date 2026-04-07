@@ -62,6 +62,15 @@ def enviar_pdf():
                     "name": nombre
                 }
             ],
+
+            # 🔥 COPIA A TU CORREO
+            "cc": [
+                {
+                    "email": "kreiosconsultoria@gmail.com",
+                    "name": "Kreios"
+                }
+            ],
+
             "subject": "Mapa de Preferencias Hemisféricas - Kreios",
             "htmlContent": f"""
             <html>
