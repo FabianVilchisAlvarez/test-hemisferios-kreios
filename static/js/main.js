@@ -772,42 +772,6 @@ const imgHeight = imgWidth * ratio;
     y += texto.length * 5 + 30;
 
     // ======================
-    // PALABRAS
-    // ======================
-
-    pdf.setTextColor(255);
-    pdf.setFont("helvetica","bold");
-    pdf.text("Palabras clave:", 15, y);
-
-    y += 6;
-
-    pdf.setFont("helvetica","normal");
-
-    let x = 15;
-
-    palabras.forEach(p => {
-
-        const w = pdf.getTextWidth(p) + 6;
-
-        if(x + w > 190){
-            x = 15;
-            y += 8;
-        }
-
-        pdf.setFillColor(255,255,255);
-        pdf.setGState(new pdf.GState({opacity:0.15}));
-        pdf.roundedRect(x, y-4, w, 6, 2, 2, "F");
-        pdf.setGState(new pdf.GState({opacity:1}));
-
-        pdf.setTextColor(255);
-        pdf.text(p, x+3, y);
-
-        x += w + 3;
-    });
-
-    y += 20;
-
-    // ======================
     // CARDS
     // ======================
 
@@ -843,6 +807,42 @@ const imgHeight = imgWidth * ratio;
 
     y += 35;
 
+    // ======================
+    // PALABRAS
+    // ======================
+
+    pdf.setTextColor(255);
+    pdf.setFont("helvetica","bold");
+    pdf.text("Palabras clave:", 15, y);
+
+    y += 6;
+
+    pdf.setFont("helvetica","normal");
+
+    let x = 15;
+
+    palabras.forEach(p => {
+
+        const w = pdf.getTextWidth(p) + 6;
+
+        if(x + w > 190){
+            x = 15;
+            y += 8;
+        }
+
+        pdf.setFillColor(255,255,255);
+        pdf.setGState(new pdf.GState({opacity:0.15}));
+        pdf.roundedRect(x, y-4, w, 6, 2, 2, "F");
+        pdf.setGState(new pdf.GState({opacity:1}));
+
+        pdf.setTextColor(255);
+        pdf.text(p, x+3, y);
+
+        x += w + 3;
+    });
+
+    y += 20;
+    
     // ======================
     // BARRAS
     // ======================
