@@ -32,7 +32,7 @@ texto:"Piensas de forma secuencial, organizada y metódica. Valoras el orden, lo
 
 rojo:{
 titulo:"Rojo — Sistema Límbico Derecho",
-texto:"Tu inteligencia es emocional e interpersonal. Conectas con las personas de forma genuina, escuchas activamente y construyes relaciones sólidas. Eres el corazón y la energía del equipo"
+texto:"Tu inteligencia es emocional e interpersonal. Conectas con las personas de forma genuina, escuchas activamente y construyes relaciones sólidas. Eres el corazón y la energía del equipo."
 },
 
 amarillo:{
