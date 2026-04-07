@@ -896,19 +896,5 @@ const imgHeight = imgWidth * ratio;
     // ENVIAR
     // ======================
 
-    const pdfBase64 = pdf.output("datauristring");
-
-    await fetch("/enviar-pdf", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            nombre: userData.nombre,
-            correo: userData.correo,
-            pdf: pdfBase64
-        })
-    });
-
-    alert("📩 Tu reporte fue enviado a tu correo");
+    pdf.save(`Perfil_${userData.nombre}.pdf`);
 }
