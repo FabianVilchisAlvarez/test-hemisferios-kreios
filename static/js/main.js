@@ -769,7 +769,7 @@ const imgHeight = imgWidth * ratio;
 
     pdf.text(texto, 20, y+32);
 
-    y += 50;
+    y += texto.length * 5 + 30;
 
     // ======================
     // PALABRAS
@@ -805,7 +805,7 @@ const imgHeight = imgWidth * ratio;
         x += w + 3;
     });
 
-    y += 12;
+    y += 20;
 
     // ======================
     // CARDS
