@@ -426,22 +426,22 @@ DASHBOARD RESULTADOS
 
 /* PERFIL */
 .perfil-dominante.bg-azul{
-  background:linear-gradient(135deg,#2C6AE8,#112C78);
+  background:linear-gradient(135deg,#112C78,#2C6AE8);
   color:white;
 }
 
 .perfil-dominante.bg-verde{
-  background:linear-gradient(135deg,#2DB656,#07381B);
+  background:linear-gradient(135deg,#07381B,#2DB656);
   color:white;
 }
 
 .perfil-dominante.bg-rojo{
-  background:linear-gradient(135deg,#E93556,#580316);
+  background:linear-gradient(135deg,#580316,#E93556);
   color:white;
 }
 
 .perfil-dominante.bg-amarillo{
-  background:linear-gradient(135deg,#F7D736,#83731C);
+  background:linear-gradient(135deg,#83731C,#F7D736);
   color:white;
 }
 
@@ -470,19 +470,19 @@ DASHBOARD RESULTADOS
 
 /* COLORES VIVOS (NO OPACOS) */
 .card-resultado.azul{
-  background:linear-gradient(135deg,#2C6AE8,#112C78);
+  background:linear-gradient(135deg,#112C78,#2C6AE8);
 }
 
 .card-resultado.verde{
-  background:linear-gradient(135deg,#2DB656,#07381B);
+  background:linear-gradient(135deg,#07381B,#2DB656);
 }
 
 .card-resultado.rojo{
-  background:linear-gradient(135deg,#E93556,#580316);
+  background:linear-gradient(135deg,#580316,#E93556);
 }
 
 .card-resultado.amarillo{
-  background:linear-gradient(135deg,#F7D736,#83731C);
+  background:linear-gradient(135deg,#83731C,#F7D736);
 }
 
 /* TEXTO */
@@ -656,20 +656,10 @@ body{
 }
 
 /* =========================
-LOGO SUPERIOR
-========================= */
-.logo-top{
-  position:fixed;
-  top:20px;
-  right:25px;
-  width:50px;
-}
-
-/* =========================
 TÍTULO PRO
 ========================= */
 .titulo-gradient{
-  font-size:64px;
+  font-size:100px;
   font-weight:800;
   line-height:1.1;
   margin-bottom:10px;
@@ -707,6 +697,7 @@ BOTÓN START (MEJORADO)
   background:linear-gradient(135deg,#0b5cff,#6a00ff);
   font-size:16px;
   font-weight:600;
+  color:white;
 }
 
 .btn-start:hover{
@@ -831,4 +822,21 @@ HEADER PROGRESO ARRIBA
   --grad-verde: linear-gradient(135deg, #2DB656, #07381B);
   --grad-rojo: linear-gradient(135deg, #E93556, #580316);
   --grad-amarillo: linear-gradient(135deg, #F7D736, #83731C);
+}
+
+
+/* =========================
+LOGO
+========================= */
+
+#logoContainer{
+  position:fixed;
+  top:20px;
+  right:25px;
+  z-index:999999; /* 🔥 MÁS ALTO QUE TODO */
+  pointer-events:none;
+}
+
+#logoContainer img{
+  width:55px;
 }

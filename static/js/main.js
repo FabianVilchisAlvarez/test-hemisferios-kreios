@@ -377,19 +377,19 @@ let html = `
     </div>
 
     <!-- CAJA PRINCIPAL -->
-    <div class="perfil-dominante bg-${dominante}" style="padding:25px; border-radius:16px;">
+    <div class="perfil-dominante bg-${dominante}" style="padding:64px; border-radius:16px;">
 
         <div style="text-align:center; margin-bottom:10px;">
-            <div style="font-size:68px; font-weight:bold;">
+            <div style="font-size:120px; font-weight:bold;">
                 ${tituloColor}
             </div>
 
-            <div style="font-size:48px; opacity:0.9;">
+            <div style="font-size:38px; opacity:0.9;">
                 ${subtitulo}
             </div>
         </div>
 
-        <p style="margin-top:18px; font-size:29px; line-height:1.6;">
+        <p style="margin-top:20px; font-size:25px; line-height:1.6;">
         ${INTERPRETACIONES[dominante].texto}
         </p>
     </div>
@@ -666,16 +666,15 @@ async function descargarPDF(){
 
     const total = Object.values(totals).reduce((a,b)=>a+b,0);
 
-    // 🔥 separar título y subtítulo
     const partesTitulo = INTERPRETACIONES[dominante].titulo.split("—");
     const tituloColor = partesTitulo[0].trim().toUpperCase();
     const subtitulo = partesTitulo[1]?.trim() || "";
 
     const colores = {
-    azul: [44,106,232],      // #2C6AE8
-    verde: [45,182,86],      // #2DB656
-    rojo: [233,53,86],       // #E93556
-    amarillo: [247,215,54]   // #F7D736
+        azul: [44,106,232],
+        verde: [45,182,86],
+        rojo: [233,53,86],
+        amarillo: [247,215,54]
     };
 
     const colorRGB = colores[dominante];
@@ -683,9 +682,36 @@ async function descargarPDF(){
     let y = 20;
 
     // ======================
+    // 🔥 FONDO (tipo UI)
+    // ======================
+
+    pdf.setFillColor(15,12,41); // oscuro
+    pdf.rect(0,0,210,297,"F");
+
+    // overlay ligero tipo gradiente
+    pdf.setFillColor(106,17,203);
+    pdf.setGState(new pdf.GState({opacity:0.15}));
+    pdf.rect(0,0,210,297,"F");
+    pdf.setGState(new pdf.GState({opacity:1}));
+
+    // ======================
+    // 🔥 LOGO
+    // ======================
+
+    const logo = new Image();
+    logo.src = "/static/images/logo.png";
+
+    await new Promise(resolve => {
+        logo.onload = resolve;
+    });
+
+    pdf.addImage(logo, "PNG", 170, 10, 25, 10);
+
+    // ======================
     // HEADER
     // ======================
 
+    pdf.setTextColor(255);
     pdf.setFont("helvetica","bold");
     pdf.setFontSize(20);
     pdf.text("Resultados", 105, y, {align:"center"});
@@ -693,12 +719,13 @@ async function descargarPDF(){
     y += 10;
 
     pdf.setFontSize(14);
-    pdf.setTextColor(100);
+    pdf.setTextColor(200);
     pdf.text("Tu perfil cognitivo", 105, y, {align:"center"});
 
     y += 8;
 
     pdf.setFontSize(10);
+    pdf.setTextColor(220);
     pdf.text(`${userData.nombre} — ${userData.correo}`, 105, y, {align:"center"});
 
     y += 12;
@@ -708,21 +735,24 @@ async function descargarPDF(){
     // ======================
 
     pdf.setFillColor(...colorRGB);
-    pdf.roundedRect(15, y, 180, 40, 5, 5, "F"); // 🔥 más alta
+    pdf.roundedRect(15, y, 180, 40, 5, 5, "F");
 
-    pdf.setTextColor(255,255,255);
+    // 🔥 efecto brillo (simula gradiente)
+    pdf.setFillColor(255,255,255);
+    pdf.setGState(new pdf.GState({opacity:0.08}));
+    pdf.roundedRect(15, y, 180, 20, 5, 5, "F");
+    pdf.setGState(new pdf.GState({opacity:1}));
 
-    // 🔥 TÍTULO GRANDE
+    pdf.setTextColor(255);
+
     pdf.setFont("helvetica","bold");
     pdf.setFontSize(16);
     pdf.text(tituloColor, 105, y+10, { align:"center" });
 
-    // 🔥 SUBTÍTULO
     pdf.setFont("helvetica","normal");
     pdf.setFontSize(11);
     pdf.text(subtitulo, 105, y+16, { align:"center" });
 
-    // 🔥 TEXTO DESCRIPTIVO
     pdf.setFontSize(10);
 
     const texto = pdf.splitTextToSize(
@@ -735,10 +765,10 @@ async function descargarPDF(){
     y += 50;
 
     // ======================
-    // PALABRAS CLAVE
+    // PALABRAS
     // ======================
 
-    pdf.setTextColor(0);
+    pdf.setTextColor(255);
     pdf.setFont("helvetica","bold");
     pdf.text("Palabras clave:", 15, y);
 
@@ -757,10 +787,12 @@ async function descargarPDF(){
             y += 8;
         }
 
-        pdf.setFillColor(230,230,230);
+        pdf.setFillColor(255,255,255);
+        pdf.setGState(new pdf.GState({opacity:0.15}));
         pdf.roundedRect(x, y-4, w, 6, 2, 2, "F");
+        pdf.setGState(new pdf.GState({opacity:1}));
 
-        pdf.setTextColor(0);
+        pdf.setTextColor(255);
         pdf.text(p, x+3, y);
 
         x += w + 3;
@@ -769,7 +801,7 @@ async function descargarPDF(){
     y += 12;
 
     // ======================
-    // CARDS RESULTADOS
+    // CARDS
     // ======================
 
     const cardWidth = 40;
@@ -778,9 +810,16 @@ async function descargarPDF(){
     Object.entries(totals).forEach(([color,val])=>{
 
         const porcentaje = Math.round((val/total)*100);
+        const [r,g,b] = colores[color];
 
-        pdf.setFillColor(...colores[color]);
+        pdf.setFillColor(r,g,b);
         pdf.roundedRect(xCard, y, cardWidth, 25, 4, 4, "F");
+
+        // 🔥 brillo tipo gradiente
+        pdf.setFillColor(255,255,255);
+        pdf.setGState(new pdf.GState({opacity:0.1}));
+        pdf.roundedRect(xCard, y, cardWidth, 12, 4, 4, "F");
+        pdf.setGState(new pdf.GState({opacity:1}));
 
         pdf.setTextColor(255);
         pdf.setFontSize(10);
@@ -801,7 +840,7 @@ async function descargarPDF(){
     // BARRAS
     // ======================
 
-    pdf.setTextColor(0);
+    pdf.setTextColor(255);
     pdf.setFontSize(12);
     pdf.text("Distribución", 15, y);
 
@@ -811,12 +850,14 @@ async function descargarPDF(){
 
         const porcentaje = Math.round((val/total)*100);
 
-        pdf.setTextColor(0);
+        pdf.setTextColor(255);
         pdf.setFontSize(10);
         pdf.text(color.toUpperCase(), 15, y);
 
-        pdf.setFillColor(230,230,230);
+        pdf.setFillColor(255,255,255);
+        pdf.setGState(new pdf.GState({opacity:0.2}));
         pdf.roundedRect(50, y-4, 100, 5, 2, 2, "F");
+        pdf.setGState(new pdf.GState({opacity:1}));
 
         pdf.setFillColor(...colores[color]);
         pdf.roundedRect(50, y-4, porcentaje, 5, 2, 2, "F");
@@ -830,30 +871,33 @@ async function descargarPDF(){
     // FOOTER
     // ======================
 
-    pdf.setDrawColor(200);
+    pdf.setDrawColor(255);
+    pdf.setGState(new pdf.GState({opacity:0.2}));
     pdf.line(15, 280, 195, 280);
+    pdf.setGState(new pdf.GState({opacity:1}));
 
     pdf.setFontSize(8);
-    pdf.setTextColor(120);
+    pdf.setTextColor(200);
     pdf.text("Reporte generado automáticamente", 15, 285);
     pdf.text("Kreios", 170, 285);
 
-    // 🔥 convertir PDF a base64
-const pdfBase64 = pdf.output("datauristring");
+    // ======================
+    // ENVIAR
+    // ======================
 
-// 🔥 enviar al backend (Flask)
-await fetch("/enviar-pdf", {
-    method: "POST",
-    headers: {
-        "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-        nombre: userData.nombre,
-        correo: userData.correo,
-        pdf: pdfBase64
-    })
-});
+    const pdfBase64 = pdf.output("datauristring");
 
-// 🔥 mensaje al usuario
-alert("📩 Tu reporte fue enviado a tu correo");
+    await fetch("/enviar-pdf", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            nombre: userData.nombre,
+            correo: userData.correo,
+            pdf: pdfBase64
+        })
+    });
+
+    alert("📩 Tu reporte fue enviado a tu correo");
 }
