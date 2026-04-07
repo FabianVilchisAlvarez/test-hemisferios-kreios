@@ -477,8 +477,11 @@ let html = `
 
 
     // REACTIVAR BOTÓN
+    const btn = document.getElementById("descargar");
+    btn.replaceWith(btn.cloneNode(true)); // limpia eventos anteriores
+
     document.getElementById("descargar")
-        .addEventListener("click", descargarPDF);
+    .addEventListener("click", descargarPDF);
 }
 
 /* =======================
@@ -705,7 +708,11 @@ async function descargarPDF(){
         logo.onload = resolve;
     });
 
-    pdf.addImage(logo, "PNG", 170, 10, 25, 10);
+    const imgWidth = 25; // tamaño deseado
+    const ratio = logo.naturalHeight / logo.naturalWidth;
+const imgHeight = imgWidth * ratio;
+
+    pdf.addImage(logo, "PNG", 170, 10, imgWidth, imgHeight);
 
     // ======================
     // HEADER
@@ -735,7 +742,7 @@ async function descargarPDF(){
     // ======================
 
     pdf.setFillColor(...colorRGB);
-    pdf.roundedRect(15, y, 180, 40, 5, 5, "F");
+    pdf.roundedRect(15, y, 180, 55, 5, 5, "F");
 
     // 🔥 efecto brillo (simula gradiente)
     pdf.setFillColor(255,255,255);
@@ -746,21 +753,21 @@ async function descargarPDF(){
     pdf.setTextColor(255);
 
     pdf.setFont("helvetica","bold");
-    pdf.setFontSize(16);
+    pdf.setFontSize(32);
     pdf.text(tituloColor, 105, y+10, { align:"center" });
 
     pdf.setFont("helvetica","normal");
-    pdf.setFontSize(11);
+    pdf.setFontSize(18);
     pdf.text(subtitulo, 105, y+16, { align:"center" });
 
-    pdf.setFontSize(10);
+    pdf.setFontSize(12);
 
     const texto = pdf.splitTextToSize(
         INTERPRETACIONES[dominante].texto,
         170
     );
 
-    pdf.text(texto, 20, y+24);
+    pdf.text(texto, 20, y+32);
 
     y += 50;
 
