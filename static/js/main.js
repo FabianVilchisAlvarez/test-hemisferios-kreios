@@ -769,44 +769,12 @@ const imgHeight = imgWidth * ratio;
 
     pdf.text(texto, 20, y+32);
 
-    y += texto.length * 5 + 30;
+    const lineHeight = 5;
+    const textHeight = texto.length * lineHeight;
 
-    // ======================
-    // CARDS
-    // ======================
-
-    const cardWidth = 40;
-    let xCard = 15;
-
-    Object.entries(totals).forEach(([color,val])=>{
-
-        const porcentaje = Math.round((val/total)*100);
-        const [r,g,b] = colores[color];
-
-        pdf.setFillColor(r,g,b);
-        pdf.roundedRect(xCard, y, cardWidth, 25, 4, 4, "F");
-
-        // 🔥 brillo tipo gradiente
-        pdf.setFillColor(255,255,255);
-        pdf.setGState(new pdf.GState({opacity:0.1}));
-        pdf.roundedRect(xCard, y, cardWidth, 12, 4, 4, "F");
-        pdf.setGState(new pdf.GState({opacity:1}));
-
-        pdf.setTextColor(255);
-        pdf.setFontSize(10);
-        pdf.text(color.toUpperCase(), xCard+20, y+7, {align:"center"});
-
-        pdf.setFontSize(16);
-        pdf.text(String(val), xCard+20, y+15, {align:"center"});
-
-        pdf.setFontSize(9);
-        pdf.text(`${porcentaje}%`, xCard+20, y+21, {align:"center"});
-
-        xCard += cardWidth + 5;
-    });
-
-    y += 35;
-
+    // altura real desde el inicio de la card
+    y += 32 + textHeight + 15;
+    
     // ======================
     // PALABRAS
     // ======================
@@ -842,7 +810,43 @@ const imgHeight = imgWidth * ratio;
     });
 
     y += 20;
-    
+
+    // ======================
+    // CARDS
+    // ======================
+
+    const cardWidth = 40;
+    let xCard = 15;
+
+    Object.entries(totals).forEach(([color,val])=>{
+
+        const porcentaje = Math.round((val/total)*100);
+        const [r,g,b] = colores[color];
+
+        pdf.setFillColor(r,g,b);
+        pdf.roundedRect(xCard, y, cardWidth, 25, 4, 4, "F");
+
+        // 🔥 brillo tipo gradiente
+        pdf.setFillColor(255,255,255);
+        pdf.setGState(new pdf.GState({opacity:0.1}));
+        pdf.roundedRect(xCard, y, cardWidth, 12, 4, 4, "F");
+        pdf.setGState(new pdf.GState({opacity:1}));
+
+        pdf.setTextColor(255);
+        pdf.setFontSize(10);
+        pdf.text(color.toUpperCase(), xCard+20, y+7, {align:"center"});
+
+        pdf.setFontSize(16);
+        pdf.text(String(val), xCard+20, y+15, {align:"center"});
+
+        pdf.setFontSize(9);
+        pdf.text(`${porcentaje}%`, xCard+20, y+21, {align:"center"});
+
+        xCard += cardWidth + 5;
+    });
+
+    y += 40;
+
     // ======================
     // BARRAS
     // ======================
