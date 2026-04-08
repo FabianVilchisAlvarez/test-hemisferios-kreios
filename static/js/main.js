@@ -663,6 +663,9 @@ async function descargarPDF(){
     const { jsPDF } = window.jspdf;
     const pdf = new jsPDF("p", "mm", "a4");
 
+    // 🔥 FIX GLOBAL ESPACIADO
+    pdf.setLineHeightFactor(1.2);
+
     const dominante = colorFinal || obtenerDominante();
     const totals = calcularTotalesPDF();
     const palabras = obtenerPalabrasDominantes(dominante);
@@ -685,13 +688,12 @@ async function descargarPDF(){
     let y = 20;
 
     // ======================
-    // 🔥 FONDO (tipo UI)
+    // 🔥 FONDO
     // ======================
 
-    pdf.setFillColor(15,12,41); // oscuro
+    pdf.setFillColor(15,12,41);
     pdf.rect(0,0,210,297,"F");
 
-    // overlay ligero tipo gradiente
     pdf.setFillColor(106,17,203);
     pdf.setGState(new pdf.GState({opacity:0.15}));
     pdf.rect(0,0,210,297,"F");
@@ -708,9 +710,9 @@ async function descargarPDF(){
         logo.onload = resolve;
     });
 
-    const imgWidth = 25; // tamaño deseado
+    const imgWidth = 25;
     const ratio = logo.naturalHeight / logo.naturalWidth;
-const imgHeight = imgWidth * ratio;
+    const imgHeight = imgWidth * ratio;
 
     pdf.addImage(logo, "PNG", 170, 10, imgWidth, imgHeight);
 
@@ -744,7 +746,6 @@ const imgHeight = imgWidth * ratio;
     pdf.setFillColor(...colorRGB);
     pdf.roundedRect(15, y, 180, 55, 5, 5, "F");
 
-    // 🔥 efecto brillo (simula gradiente)
     pdf.setFillColor(255,255,255);
     pdf.setGState(new pdf.GState({opacity:0.08}));
     pdf.roundedRect(15, y, 180, 20, 5, 5, "F");
@@ -758,7 +759,17 @@ const imgHeight = imgWidth * ratio;
 
     pdf.setFont("helvetica","normal");
     pdf.setFontSize(18);
-    pdf.text(subtitulo, 105, y+16, { align:"center" });
+
+    // 🔥 FIX SUBTÍTULO
+    const subtituloTexto = pdf.splitTextToSize(subtitulo, 160);
+
+    pdf.text(subtituloTexto, 105, y+16, {
+        align:"center",
+        maxWidth:160,
+        lineHeightFactor:1.2
+    });
+
+    y += subtituloTexto.length * 6;
 
     pdf.setFontSize(12);
 
@@ -767,12 +778,15 @@ const imgHeight = imgWidth * ratio;
         170
     );
 
-    pdf.text(texto, 20, y+32);
+    // 🔥 FIX TEXTO PRINCIPAL
+    pdf.text(texto, 20, y+32, {
+        maxWidth:170,
+        lineHeightFactor:1.3
+    });
 
-    const lineHeight = 5;
-    const textHeight = texto.length * lineHeight;
+    const lineHeight = pdf.getLineHeight() / pdf.internal.scaleFactor;
+    const textHeight = texto.length * lineHeight * 1.2;
 
-    // altura real desde el inicio de la card
     y += 32 + textHeight + 15;
     
     // ======================
@@ -826,7 +840,6 @@ const imgHeight = imgWidth * ratio;
         pdf.setFillColor(r,g,b);
         pdf.roundedRect(xCard, y, cardWidth, 25, 4, 4, "F");
 
-        // 🔥 brillo tipo gradiente
         pdf.setFillColor(255,255,255);
         pdf.setGState(new pdf.GState({opacity:0.1}));
         pdf.roundedRect(xCard, y, cardWidth, 12, 4, 4, "F");
@@ -892,9 +905,18 @@ const imgHeight = imgWidth * ratio;
     pdf.text("Reporte generado automáticamente", 15, 285);
     pdf.text("Kreios", 170, 285);
 
-    // ======================
-    // ENVIAR
-    // ======================
+    await fetch("/guardar-resultado", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            nombre: userData.nombre,
+            correo: userData.correo,
+            dominante: dominante,
+            totales: totals
+        })
+    });
 
     pdf.save(`Perfil_${userData.nombre}.pdf`);
 }
