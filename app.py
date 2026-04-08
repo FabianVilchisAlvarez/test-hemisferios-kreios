@@ -6,6 +6,7 @@ from datetime import datetime
 # IMPORT DB SOLO SI NO SE SALTA
 # =========================
 SKIP_DB = os.environ.get("SKIP_DB", "0") == "1"
+
 if not SKIP_DB:
     import psycopg2
 
@@ -166,9 +167,10 @@ def health():
     return {"status": "ok"}
 
 # =========================
-# INIT APP
+# INIT APP (🔥 ARREGLADO)
 # =========================
-init_db()
+if not SKIP_DB:
+    init_db()
 
 # =========================
 # RUN

@@ -27,7 +27,7 @@ texto:"Tu mente trabaja con lógica, datos y análisis. Eres preciso, crítico y
 
 verde:{
 titulo:"Verde — Sistema Límbico Izquierdo",
-texto:"Piensas de forma secuencial, organizada y metódica. Valoras el orden, los procedimientos y el detalle. Eres el pilar confiable que mantiene los proyectos en marcha y las promesas cumplidas."
+texto:"Piensas de forma secuencial, organizada y metódica. Valoras mucho el orden, los procedimientos y el detalle. Eres el pilar confiable que mantiene los proyectos en marcha y las promesas cumplidas."
 },
 
 rojo:{
@@ -754,7 +754,7 @@ async function descargarPDF(){
     pdf.setTextColor(255);
 
     pdf.setFont("helvetica","bold");
-    pdf.setFontSize(32);
+    pdf.setFontSize(33);
     pdf.text(tituloColor, 105, y+10, { align:"center" });
 
     pdf.setFont("helvetica","normal");
