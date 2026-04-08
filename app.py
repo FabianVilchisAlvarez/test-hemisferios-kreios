@@ -6,9 +6,17 @@ from datetime import datetime
 app = Flask(__name__)
 
 # =========================
+# MODO SIN DB PARA DEPLOY TEMPORAL
+# =========================
+SKIP_DB = os.environ.get("SKIP_DB", "0") == "1"
+
+# =========================
 # DB CONNECTION
 # =========================
 def get_db_connection():
+    if SKIP_DB:
+        print("⚠️ DB connection skipped (SKIP_DB=1)")
+        return None
     try:
         conn = psycopg2.connect(
             os.environ.get("DATABASE_URL"),
@@ -19,11 +27,14 @@ def get_db_connection():
         print("❌ Error conectando a DB:", str(e))
         return None
 
-
 # =========================
 # INIT TABLE
 # =========================
 def init_db():
+    if SKIP_DB:
+        print("⚠️ DB initialization skipped (SKIP_DB=1)")
+        return
+
     conn = get_db_connection()
     if conn is None:
         print("⚠️ No se pudo inicializar la DB")
@@ -51,14 +62,12 @@ def init_db():
 
     print("✅ Tabla verificada/creada")
 
-
 # =========================
 # HOME
 # =========================
 @app.route("/")
 def index():
     return render_template("index.html")
-
 
 # =========================
 # GUARDAR RESULTADO
@@ -109,7 +118,6 @@ def guardar_resultado():
         print("❌ Error guardando:", str(e))
         return jsonify({"error": str(e)}), 500
 
-
 # =========================
 # VER RESULTADOS (DEBUG / FUTURO DASHBOARD)
 # =========================
@@ -153,7 +161,6 @@ def ver_resultados():
         print("❌ Error consultando:", str(e))
         return jsonify({"error": str(e)}), 500
 
-
 # =========================
 # HEALTH CHECK
 # =========================
@@ -161,12 +168,10 @@ def ver_resultados():
 def health():
     return {"status": "ok"}
 
-
 # =========================
 # INIT APP (IMPORTANTE PARA RENDER)
 # =========================
 init_db()
-
 
 # =========================
 # RUN
